@@ -20,17 +20,18 @@
 
 
     <main class="px-4 pt-0">
-        <div class="-mt-6 relative z-10 flex gap-4 items-center justify-center">
-            <button class="flex-1 bg-white shadow rounded-xl py-3 px-4 flex items-center gap-3">
+        <form (ngSubmit)="pesquisar()" class="-mt-6 relative z-10 flex gap-4 items-center justify-center w-full">
+            <div class="flex-1 bg-white shadow rounded-xl py-3 px-4 flex items-center gap-3">
                 <img src="assets/icones/lupa.svg" alt="Buscar" class="w-5 h-5" />
-                <span class="text-slate-600">Buscar carro</span>
-            </button>
+                <input name="busca" [(ngModel)]="searchTerm" (keydown.enter)="pesquisar()" placeholder="Pesquisar por nome do carro e pressione Enter"
+                    class="flex-1 bg-transparent text-slate-700 placeholder:text-slate-400 outline-none" />
+            </div>
 
-            <button routerLink="/filtro" class="w-24 bg-white shadow rounded-xl py-3 flex items-center justify-center cursor-pointer">
+            <button routerLink="/filtro" type="button" class="w-24 bg-white shadow rounded-xl py-3 flex items-center justify-center cursor-pointer">
                 <img src="assets/icones/filtro.svg" alt="Filtrar" class="w-5 h-5" />
                 <span class="text-slate-600">Filtrar</span> 
             </button>
-        </div>
+        </form>
 
 
         <section class="mt-8" *ngIf="carrosReservados && carrosReservados.length > 0">
@@ -42,6 +43,27 @@
                 </ng-container>
             </div>
         </section>
+
+        <section class="mt-8" *ngIf="searchResults && searchResults.length > 0">
+            <h3 class="text-lg font-semibold text-slate-800 mb-4">Resultados da busca</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <app-card-carro *ngFor="let c of searchResults" [carro]="c" contexto="filtro" (reservar)="solicitarReserva($event)"></app-card-carro>
+            </div>
+            <div *ngIf="sucessoReserva" class="mt-3 text-green-600">{{ sucessoReserva }}</div>
+            <div *ngIf="erroReserva" class="mt-3 text-rose-600">{{ erroReserva }}</div>
+        </section>
+
+        <!-- Modal confirmação de reserva -->
+        <div *ngIf="reservaConfirmModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+            <div class="bg-white rounded-lg p-6 max-w-sm w-full">
+                <h3 class="text-lg font-semibold mb-3">Confirmar reserva</h3>
+                <p class="mb-4">Deseja realmente reservar este veículo?</p>
+                <div class="flex justify-end gap-3">
+                    <button (click)="confirmarReserva(false)" class="px-4 py-2 rounded bg-gray-100 cursor-pointer">Não</button>
+                    <button (click)="confirmarReserva(true)" class="px-4 py-2 rounded bg-rose-600 text-white cursor-pointer">Sim</button>
+                </div>
+            </div>
+        </div>
 
         <div class="mt-8" *ngIf="!carregandoReservas && (!carrosReservados || carrosReservados.length === 0)">
             <div class="bg-white rounded-lg p-6 text-center shadow">
@@ -59,64 +81,7 @@
                 <span>Acessar por QR code</span>
             </button>
         </div>
-
-        <div class="mt-4 flex justify-center">
-            <button (click)="abrirModalAdicionar()" class="bg-rose-600 text-white rounded-full px-6 py-3 shadow-lg flex items-center gap-3 cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                </svg>
-                <span class="font-medium">Adicionar veículo</span>
-            </button>
-        </div>
-
-
-        <div *ngIf="mostrandoModalAdicionar" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-            <div class="w-full max-w-lg bg-white rounded-lg shadow-lg p-6">
-                <h3 class="text-lg font-semibold mb-4">Adicionar veículo</h3>
-                <div class="grid grid-cols-1 gap-3">
-                    <label class="text-sm">Nome
-                        <input [(ngModel)]="novoVeiculo.name" class="w-full mt-1 border rounded px-3 py-2" />
-                    </label>
-
-                    <label class="text-sm">Ano do modelo
-                        <input [(ngModel)]="novoVeiculo.year" class="w-full mt-1 border rounded px-3 py-2" />
-                    </label>
-
-                    <label class="text-sm">Tipo
-                        <select [(ngModel)]="novoVeiculo.type" class="w-full mt-1 border rounded px-3 py-2">
-                            <option value="">Selecione</option>
-                            <option *ngFor="let t of carroceriasOptions" [value]="t">{{ t }}</option>
-                        </select>
-                    </label>
-
-                    <label class="text-sm">Motor
-                        <select [(ngModel)]="novoVeiculo.engine" class="w-full mt-1 border rounded px-3 py-2">
-                            <option value="">Selecione</option>
-                            <option *ngFor="let m of motoresOptions" [value]="m">{{ m }}</option>
-                        </select>
-                    </label>
-
-                    <label class="text-sm">Quantidade de lugares
-                        <select [(ngModel)]="novoVeiculo.size" class="w-full mt-1 border rounded px-3 py-2">
-                            <option value="">Selecione</option>
-                            <option *ngFor="let s of lugaresOptions" [value]="s">{{ s }}</option>
-                        </select>
-                    </label>
-
-                    <label class="text-sm">URL da imagem
-                        <input [(ngModel)]="novoVeiculo.imageUrl" class="w-full mt-1 border rounded px-3 py-2" />
-                    </label>
-                </div>
-
-                <div class="mt-4 flex gap-3 justify-end">
-                    <button (click)="fecharModalAdicionar()" class="px-4 py-2 rounded bg-gray-100">Cancelar</button>
-                    <button (click)="salvarCarroInicio()" class="px-4 py-2 rounded bg-rose-600 text-white">Salvar carro</button>
-                </div>
-
-                <div *ngIf="sucessoMensagem" class="mt-3 text-sm text-green-600">{{ sucessoMensagem }}</div>
-            </div>
-        </div>
     </main>
 
-    <app-menu *ngIf="!mostrandoModalAdicionar"></app-menu>
+    <app-menu *ngIf="!reservaConfirmModal"></app-menu>
 </section>

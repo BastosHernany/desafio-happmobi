@@ -22,7 +22,7 @@ export class UsuarioService {
   }
 
   buscarPorEmailSenha(email: string, senha: string): Observable<Usuario[]> {
-    // json-server supports query params
+
     return this.http.get<Usuario[]>(`${this.baseUrl}?email=${encodeURIComponent(email)}&senha=${encodeURIComponent(senha)}`);
   }
 

@@ -18,7 +18,7 @@
 		<div *ngIf="sucessoMensagem" class="mb-4 text-green-600">{{ sucessoMensagem }}</div>
 
 		<section>
-			<div *ngIf="carros?.length === 0" class="text-center text-slate-500">Nenhum veículo encontrado.</div>
+			<div *ngIf="(carros || []).length === 0" class="text-center text-slate-500">Nenhum veículo encontrado.</div>
 
 			<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
 				<app-card-carro *ngFor="let c of carros" [carro]="c" contexto="central" (verMais)="abrirDetalhes($event)"></app-card-carro>
