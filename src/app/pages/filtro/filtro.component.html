@@ -1,139 +1,97 @@
 <section class="min-h-screen bg-white pb-32">
 
-	<div class="bg-slate-900 h-36.25">
-		<div class="max-w-xl mx-auto px-4 h-full flex items-center justify-center">
-			<div class="w-full max-w-md bg-white rounded-xl shadow flex items-center gap-3 py-3 px-4">
-				<img src="assets/icones/lupa.svg" alt="Buscar" class="w-5 h-5" />
-				<input [(ngModel)]="search" name="search" type="search" placeholder="Buscar carro" class="flex-1 text-sm text-slate-700 outline-none" />
-			</div>
-		</div>
-	</div>
+    <div class="bg-slate-900 h-36.25">
+        <div class="max-w-xl mx-auto px-4 h-full flex items-center justify-center">
+            <div class="w-full max-w-md bg-white rounded-xl shadow flex items-center gap-3 py-3 px-4">
+                <img src="assets/icones/lupa.svg" alt="Buscar" class="w-5 h-5" />
+                <input [(ngModel)]="search" (ngModelChange)="onSearchChange($event)" name="search" type="search" placeholder="Buscar carro"
+                    (keydown.enter)="aplicarFiltro()" class="flex-1 text-sm text-slate-700 outline-none" />
+            </div>
+        </div>
+    </div>
 
-	<header class="flex items-center justify-between px-4 py-3 border-b bg-white ">
-		<button type="button" class="text-sm text-slate-700 cursor-pointer" (click)="cancelar()">CANCELAR</button>
-		<button class="text-sm font-semibold cursor-pointer" (click)="mostrarFiltros()">FILTROS</button>
-		<button type="button" class="text-sm text-rose-700 cursor-pointer" (click)="limparTudo()">LIMPAR</button>
-	</header>
+    <header class="flex items-center justify-between px-4 py-3 border-b bg-white ">
+        <button type="button" class="text-sm text-slate-700 cursor-pointer" (click)="cancelar()">CANCELAR</button>
+        <button class="text-sm font-semibold cursor-pointer" (click)="mostrarFiltros()">FILTROS</button>
+        <button type="button" class="text-sm text-rose-700 cursor-pointer" (click)="limparTudo()">LIMPAR</button>
+    </header>
 
-	<main class="px-4 pt-4">
+    <main class="px-4 pt-4">
 
-		<section *ngIf="carrosEncontrados.length > 0" class="mb-6">
-			<h3 class="text-lg font-semibold text-slate-800 mb-4">Resultados</h3>
-			<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-				<div *ngFor="let c of carrosEncontrados" class="w-full">
-					<app-card-carro [carro]="c" [contexto]="'filtro'"></app-card-carro>
-				</div>
-			</div>
-		</section>
+        <section *ngIf="carrosEncontrados.length > 0" class="mb-6">
+            <h3 class="text-lg font-semibold text-slate-800 mb-4">Resultados</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                <div *ngFor="let c of carrosEncontrados" class="w-full">
+                    <app-card-carro [carro]="c" [contexto]="'filtro'"></app-card-carro>
+                </div>
+            </div>
+        </section>
 
-		<section *ngIf="naoEncontrado && carrosEncontrados.length === 0" class="mb-6 text-center">
-			<p class="text-slate-700 mb-4">Não existem nenhum carro com esse especificidade, gostaria de adicionar um novo veiculo?</p>
-			<button (click)="abrirModalAdicionar()" class="mx-auto bg-rose-600 text-white px-6 py-2 rounded-lg">Adicionar veículo</button>
-		</section>
-
-
-		<section *ngIf="mostrarFormulario" aria-labelledby="carrocerias" class="mb-6">
-			<div class="flex items-center justify-between py-2">
-				<h2 id="carrocerias" class="text-sm font-medium text-slate-700">Tipos de carrocerias</h2>
-				<button aria-label="abrir" class="text-rose-600">›</button>
-			</div>
-
-			<fieldset class="grid grid-cols-2 gap-3 pt-2">
-				<label *ngFor="let opt of carroceriasOptions" class="flex items-center gap-3 p-2 rounded-lg bg-white shadow-sm cursor-pointer"
-					[ngClass]="{ 'bg-rose-600': selecionadasCarrocerias.has(opt) }">
-					<input type="checkbox" [checked]="selecionadasCarrocerias.has(opt)" (change)="toggleCarroceria(opt)" class="w-4 h-4 accent-rose-600 rounded cursor-pointer" />
-					<span class="text-sm text-slate-700">{{ opt }}</span>
-				</label>
-			</fieldset>
-		</section>
+        <section *ngIf="naoEncontrado && carrosEncontrados.length === 0" class="mb-6 text-center">
+            <p class="text-slate-700 mb-4 text-lg">Não temos esse modelo disponível no momento. Abaixo estão outros
+                veículos disponíveis:</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                <div *ngFor="let c of carrosDisponiveis" class="w-full">
+                    <app-card-carro [carro]="c" [contexto]="'filtro'"></app-card-carro>
+                </div>
+            </div>
+        </section>
 
 
-		<section *ngIf="mostrarFormulario" aria-labelledby="motores" class="mb-6">
-			<div class="flex items-center justify-between py-2">
-				<h2 id="motores" class="text-sm font-medium text-slate-700">Tipos de motores</h2>
-				<button aria-label="abrir" class="text-rose-700">›</button>
-			</div>
+        <section *ngIf="mostrarFormulario" aria-labelledby="carrocerias" class="mb-6">
+            <div class="flex items-center justify-between py-2">
+                <h2 id="carrocerias" class="text-sm font-medium text-slate-700">Tipos de carrocerias</h2>
+                <button aria-label="abrir" class="text-rose-600">›</button>
+            </div>
 
-			<div class="pt-2 grid grid-cols-2 gap-3">
-				<button *ngFor="let m of motoresOptions" (click)="toggleMotor(m)"
-					class="px-4 py-2 rounded-full shadow cursor-pointer"
-					[ngClass]="{ 'bg-rose-600 text-white': selecionadosMotores.has(m), 'bg-white text-slate-700': !selecionadosMotores.has(m) }">
-					Motor {{ m }}
-				</button>
-			</div>
-		</section>
+            <fieldset class="grid grid-cols-2 gap-3 pt-2">
+                <label *ngFor="let opt of carroceriasOptions"
+                    class="flex items-center gap-3 p-2 rounded-lg bg-white shadow-sm cursor-pointer"
+                    [ngClass]="{ 'bg-rose-600': selecionadasCarrocerias.has(opt) }">
+                    <input type="checkbox" [checked]="selecionadasCarrocerias.has(opt)" (change)="toggleCarroceria(opt)"
+                        class="w-4 h-4 accent-rose-600 rounded cursor-pointer" />
+                    <span class="text-sm text-slate-700">{{ opt }}</span>
+                </label>
+            </fieldset>
+        </section>
 
 
-		<section *ngIf="mostrarFormulario" aria-labelledby="lugares" class="mb-6">
-			<div class="flex items-center justify-between py-2">
-				<h2 id="lugares" class="text-sm font-medium text-slate-700">Quantidade de lugares</h2>
-				<button aria-label="abrir" class="text-rose-700">›</button>
-			</div>
+        <section *ngIf="mostrarFormulario" aria-labelledby="motores" class="mb-6">
+            <div class="flex items-center justify-between py-2">
+                <h2 id="motores" class="text-sm font-medium text-slate-700">Tipos de motores</h2>
+                <button aria-label="abrir" class="text-rose-700">›</button>
+            </div>
 
-			<div class="pt-3 flex gap-3 flex-wrap">
-				<button *ngFor="let l of lugaresOptions" (click)="toggleLugar(l)"
-					class="w-12 h-12 rounded-lg shadow cursor-pointer"
-					[ngClass]="{ 'bg-rose-600 text-white': selecionadosLugares.has(l), 'bg-white text-slate-700': !selecionadosLugares.has(l) }">{{ l }}</button>
-			</div>
-		</section>
+            <div class="pt-2 grid grid-cols-2 gap-3">
+                <button *ngFor="let m of motoresOptions" (click)="toggleMotor(m)"
+                    class="px-4 py-2 rounded-full shadow cursor-pointer"
+                    [ngClass]="{ 'bg-rose-600 text-white': selecionadosMotores.has(m), 'bg-white text-slate-700': !selecionadosMotores.has(m) }">
+                    Motor {{ m }}
+                </button>
+            </div>
+        </section>
 
-	</main>
 
-	<!-- Modal adicionar veículo -->
-	<div *ngIf="mostrandoModalAdicionar" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-		<div class="w-full max-w-lg bg-white rounded-lg shadow-lg p-6">
-			<h3 class="text-lg font-semibold mb-4">Adicionar veículo</h3>
-			<div class="grid grid-cols-1 gap-3">
-				<label class="text-sm">Nome
-					<input [(ngModel)]="novoVeiculo.name" class="w-full mt-1 border rounded px-3 py-2" />
-				</label>
+        <section *ngIf="mostrarFormulario" aria-labelledby="lugares" class="mb-6">
+            <div class="flex items-center justify-between py-2">
+                <h2 id="lugares" class="text-sm font-medium text-slate-700">Quantidade de lugares</h2>
+                <button aria-label="abrir" class="text-rose-700">›</button>
+            </div>
 
-				<label class="text-sm">Ano do modelo
-					<input [(ngModel)]="novoVeiculo.year" class="w-full mt-1 border rounded px-3 py-2" />
-				</label>
+            <div class="pt-3 flex gap-3 flex-wrap">
+                <button *ngFor="let l of lugaresOptions" (click)="toggleLugar(l)"
+                    class="w-12 h-12 rounded-lg shadow cursor-pointer"
+                    [ngClass]="{ 'bg-rose-600 text-white': selecionadosLugares.has(l), 'bg-white text-slate-700': !selecionadosLugares.has(l) }">{{
+                    l }}</button>
+            </div>
+        </section>
 
-				<label class="text-sm">Tipo
-					<select [(ngModel)]="novoVeiculo.type" class="w-full mt-1 border rounded px-3 py-2">
-						<option value="">Selecione</option>
-						<option *ngFor="let t of carroceriasOptions" [value]="t">{{ t }}</option>
-					</select>
-				</label>
+        <div class="max-w-xl mx-auto fixed bottom-4 left-0 right-0 px-6 z-30">
+            <button (click)="aplicarFiltro()"
+                class="w-full bg-slate-800 text-white rounded-full py-4 shadow-lg flex items-center justify-center gap-3 cursor-pointer">
+                <span class="font-medium">APLICAR FILTRO</span>
+            </button>
+        </div>
+    </main>
 
-				<label class="text-sm">Motor
-					<select [(ngModel)]="novoVeiculo.engine" class="w-full mt-1 border rounded px-3 py-2">
-						<option value="">Selecione</option>
-						<option *ngFor="let m of motoresOptions" [value]="m">{{ m }}</option>
-					</select>
-				</label>
-
-				<label class="text-sm">Quantidade de lugares
-					<select [(ngModel)]="novoVeiculo.size" class="w-full mt-1 border rounded px-3 py-2">
-						<option value="">Selecione</option>
-						<option *ngFor="let s of lugaresOptions" [value]="s">{{ s }}</option>
-					</select>
-				</label>
-
-				<label class="text-sm">URL da imagem
-					<input [(ngModel)]="novoVeiculo.imageUrl" class="w-full mt-1 border rounded px-3 py-2" />
-				</label>
-			</div>
-
-			<div class="mt-4 flex gap-3 justify-end">
-				<button (click)="fecharModalAdicionar()" class="px-4 py-2 rounded bg-gray-100">Cancelar</button>
-				<button (click)="salvarCarro()" class="px-4 py-2 rounded bg-rose-600 text-white">Salvar carro</button>
-			</div>
-			<div *ngIf="sucessoMensagem" class="mt-3 text-sm text-green-600">{{ sucessoMensagem }}</div>
-		</div>
-	</div>
-
-		<footer class="fixed bottom-4 left-0 right-0 px-6 z-30">
-			<div class="max-w-xl mx-auto">
-				<button (click)="aplicarFiltro()" class="w-full bg-slate-800 text-white rounded-full py-4 shadow-lg flex items-center justify-center gap-3 cursor-pointer">
-				<svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 11V7m0 4h4m-4 0H7" />
-				</svg>
-				<span class="font-medium">APLICAR FILTRO</span>
-			</button>
-		</div>
-	</footer>
 </section>

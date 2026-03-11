@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Carro, CarroService } from '../../services/carro.service';
+import { ReservaService } from '../../services/reserva.service';
 import { CardCarroComponent } from '../../components/card-carro/card-carro.component';
 
 @Component({
@@ -16,19 +17,9 @@ export class FiltroComponent {
   search = '';
   mostrarFormulario = true;
   carrosEncontrados: Carro[] = [];
+  carrosDisponiveis: Carro[] = [];
   carregando = false;
   naoEncontrado = false;
-  mostrandoModalAdicionar = false;
-  sucessoMensagem = '';
-
-  novoVeiculo: Partial<Carro> = {
-    name: '',
-    year: '',
-    type: '',
-    engine: '',
-    size: '',
-    imageUrl: ''
-  };
 
   selecionadasCarrocerias = new Set<string>();
   selecionadosMotores = new Set<string>();
@@ -56,7 +47,18 @@ export class FiltroComponent {
   motoresOptions: string[] = ['1.0', '1.4', '1.6', '1.8', '2.0'];
   lugaresOptions: string[] = ['02', '03', '04', '05', '06', '07'];
 
-  constructor(private carroService: CarroService, private router: Router) {}
+  constructor(private carroService: CarroService, private reservaService: ReservaService, private router: Router) {}
+
+  onSearchChange(value: string) {
+    this.search = value;
+    if (!value || value.trim() === '') {
+      // quando o campo de busca for limpo, restaurar a visualização de filtros
+      this.carrosEncontrados = [];
+      this.carrosDisponiveis = [];
+      this.naoEncontrado = false;
+      this.mostrarFormulario = true;
+    }
+  }
 
   toggleCarroceria(item: string) {
     if (this.selecionadasCarrocerias.has(item)) this.selecionadasCarrocerias.delete(item);
@@ -108,6 +110,26 @@ export class FiltroComponent {
         this.carregando = false;
         this.mostrarFormulario = false;
         this.naoEncontrado = resultados.length === 0;
+
+        if (this.naoEncontrado) {
+          // listar carros disponíveis (excluir os que já estão reservados)
+          this.carroService.listarCarros().subscribe({
+            next: (itens) => {
+              this.reservaService.listarTodas().subscribe({
+                next: (reservas) => {
+                  const idsReservados = new Set((reservas || []).map(r => String(r.carroId)));
+                  this.carrosDisponiveis = (itens || []).filter(i => !idsReservados.has(String(i.id)));
+                },
+                error: () => {
+                  this.carrosDisponiveis = itens || [];
+                }
+              });
+            },
+            error: () => {
+              this.carrosDisponiveis = [];
+            }
+          });
+        }
       },
       error: () => {
         this.carrosEncontrados = [];
@@ -130,43 +152,6 @@ export class FiltroComponent {
     this.carrosEncontrados = [];
     this.naoEncontrado = false;
     this.mostrarFormulario = true;
-  }
-
-  abrirModalAdicionar() {
-    this.mostrandoModalAdicionar = true;
-    this.sucessoMensagem = '';
-  }
-
-  fecharModalAdicionar() {
-    this.mostrandoModalAdicionar = false;
-    this.novoVeiculo = { name: '', year: '', type: '', engine: '', size: '', imageUrl: '' };
-  }
-
-  salvarCarro() {
-    const payload: Partial<Carro> = {
-      name: this.novoVeiculo.name || 'Sem nome',
-      year: this.novoVeiculo.year || '',
-      type: this.novoVeiculo.type || '',
-      engine: this.novoVeiculo.engine || '',
-      size: this.novoVeiculo.size || '',
-      imageUrl: this.novoVeiculo.imageUrl || undefined
-    };
-
-    this.carroService.criarCarro(payload).subscribe({
-      next: (c) => {
-        // mostrar sucesso e adicionar ao resultado
-        this.sucessoMensagem = 'Novo veiculo cadastrado com sucesso';
-        this.carrosEncontrados.unshift(c);
-        this.mostrandoModalAdicionar = false;
-        this.mostrarFormulario = false;
-        this.naoEncontrado = false;
-        setTimeout(() => (this.sucessoMensagem = ''), 3500);
-      },
-      error: () => {
-        this.sucessoMensagem = 'Erro ao cadastrar veículo';
-        setTimeout(() => (this.sucessoMensagem = ''), 3500);
-      }
-    });
   }
 
   cancelar() {

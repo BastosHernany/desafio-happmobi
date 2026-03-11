@@ -65,6 +65,18 @@
             </div>
         </div>
 
+        <!-- Modal de erro / aviso (usuário já tem reserva ou veículo ocupado) -->
+        <div *ngIf="reservaErroModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+            <div class="bg-white rounded-lg p-6 max-w-sm w-full">
+                <h3 class="text-lg font-semibold mb-3">Aviso</h3>
+                <p class="mb-4">{{ reservaErroMensagem }}</p>
+                <div class="flex justify-end gap-3">
+                    <button (click)="(reservaErroModal=false)" class="px-4 py-2 rounded bg-gray-100">Fechar</button>
+                    <button *ngIf="reservaErroIrAgendamentos" (click)="router.navigate(['/agendamentos'])" class="px-4 py-2 rounded bg-rose-600 text-white">Ir para agendamentos</button>
+                </div>
+            </div>
+        </div>
+
         <div class="mt-8" *ngIf="!carregandoReservas && (!carrosReservados || carrosReservados.length === 0)">
             <div class="bg-white rounded-lg p-6 text-center shadow">
                 <p class="text-slate-700 mb-4">Você não tem nenhuma reserva, gostaria de fazer uma agora?</p>
@@ -83,5 +95,5 @@
         </div>
     </main>
 
-    <app-menu *ngIf="!reservaConfirmModal"></app-menu>
+    <app-menu *ngIf="!reservaConfirmModal && !reservaErroModal"></app-menu>
 </section>

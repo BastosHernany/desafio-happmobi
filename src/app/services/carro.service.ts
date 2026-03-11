@@ -16,7 +16,7 @@ export interface Carro {
 @Injectable({ providedIn: 'root' })
 export class CarroService {
 
-    private baseUrl = 'http://localhost:3001/carros';
+    private baseUrl = 'http://localhost:3000/carros';
 
     constructor(private http: HttpClient) { }
 

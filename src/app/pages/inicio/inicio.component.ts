@@ -5,7 +5,7 @@ import { MenuComponent } from '../../components/menu/menu.component';
 import { CardCarroComponent } from '../../components/card-carro/card-carro.component';
 import { Observable, forkJoin, of } from 'rxjs';
 import { Carro, CarroService } from '../../services/carro.service';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { AutenticacaoService } from '../../services/autenticacao.service';
 import { Usuario } from '../../services/usuario.service';
 import { ReservaService, Reserva } from '../../services/reserva.service';
@@ -32,13 +32,18 @@ export class InicioComponent {
   searchResults: Carro[] = [];
   sucessoReserva = '';
   erroReserva = '';
+  // novos estados para regras de reserva
+  reservaErroModal = false;
+  reservaErroMensagem = '';
+  reservaErroIrAgendamentos = false;
 
 
 
   constructor(
     private carroService: CarroService,
     private auth: AutenticacaoService,
-    private reservaService: ReservaService
+    private reservaService: ReservaService,
+    public router: Router
   ) {
     const user = this.auth.getUser();
     if (user) {
@@ -97,10 +102,53 @@ export class InicioComponent {
   reservaCarroSelecionado?: Carro;
 
   solicitarReserva(c: Carro) {
-    this.reservaCarroSelecionado = c;
-    this.reservaConfirmModal = true;
+    // reset mensagens
     this.sucessoReserva = '';
     this.erroReserva = '';
+    this.reservaErroModal = false;
+    this.reservaErroMensagem = '';
+    this.reservaErroIrAgendamentos = false;
+
+    const user = this.auth.getUser();
+    if (!user) {
+      this.erroReserva = 'Você precisa estar logado para reservar.';
+      return;
+    }
+
+    // 1) checar se o usuário já tem reserva ativa
+    this.reservaService.listarPorUsuario(user.id).subscribe({
+      next: (minhas) => {
+        if (minhas && minhas.length > 0) {
+          this.reservaErroMensagem = 'Você já possui uma reserva ativa.';
+          this.reservaErroIrAgendamentos = true;
+          this.reservaErroModal = true;
+          return;
+        }
+
+        // 2) checar se o veículo já está reservado por qualquer usuário
+        this.reservaService.listarTodas().subscribe({
+          next: (todas) => {
+            const ocupado = (todas || []).some(r => String(r.carroId) === String(c.id));
+            if (ocupado) {
+              this.reservaErroMensagem = 'Veículo já está reservado.';
+              this.reservaErroIrAgendamentos = false;
+              this.reservaErroModal = true;
+              return;
+            }
+
+            // tudo ok — abrir modal de confirmação
+            this.reservaCarroSelecionado = c;
+            this.reservaConfirmModal = true;
+          },
+          error: () => {
+            this.erroReserva = 'Erro ao verificar disponibilidade.';
+          }
+        });
+      },
+      error: () => {
+        this.erroReserva = 'Erro ao verificar suas reservas.';
+      }
+    });
   }
 
   confirmarReserva(res: boolean) {

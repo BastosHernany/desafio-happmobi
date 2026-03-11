@@ -13,7 +13,7 @@ export interface Usuario {
 
 @Injectable({ providedIn: 'root' })
 export class UsuarioService {
-  private baseUrl = 'http://localhost:3001/usuarios';
+  private baseUrl = 'http://localhost:3000/usuarios';
 
   constructor(private http: HttpClient) {}
 
