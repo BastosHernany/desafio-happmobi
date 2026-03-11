@@ -25,3 +25,16 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+## Backend (json-server)
+
+Adicionei um `db.json` com os dados de carros para simular o backend usando `json-server`.
+
+- **Rodar o backend:**
+
+```bash
+npm install
+npm run start:backend
+```
+
+O servidor ficará disponível em `http://localhost:3000` e os carros em `http://localhost:3000/carros`.
