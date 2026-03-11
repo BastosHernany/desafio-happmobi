@@ -30,6 +30,7 @@ export class InicioComponent {
   carregandoReservas = true;
 
 
+<<<<<<< HEAD
   searchTerm = '';
   searchResults: Carro[] = [];
   sucessoReserva = '';
@@ -40,6 +41,8 @@ export class InicioComponent {
   reservaErroIrAgendamentos = false;
 
 
+=======
+>>>>>>> 828f236e78a66e0e7f60932157a5f08985d9238d
 
   constructor(
     private carroService: CarroService,
@@ -68,6 +71,7 @@ export class InicioComponent {
         })
       ).subscribe({
         next: (carros: any) => {
+<<<<<<< HEAD
           this.carrosAtivos = carros || [];
           // carregar histórico local e mesclar (manter únicos)
           const historico = this.loadHistoricoReservas();
@@ -79,6 +83,9 @@ export class InicioComponent {
             if (!mapa.has(String(h.id))) mapa.set(String(h.id), h);
           });
           this.carrosReservados = Array.from(mapa.values());
+=======
+          this.carrosReservados = carros || [];
+>>>>>>> 828f236e78a66e0e7f60932157a5f08985d9238d
           this.carregandoReservas = false;
         },
         error: () => {
@@ -95,6 +102,7 @@ export class InicioComponent {
     }
   }
 
+<<<<<<< HEAD
   pesquisar() {
     const query = (this.searchTerm || '').trim();
     if (!query) {
@@ -111,6 +119,10 @@ export class InicioComponent {
       }
     });
   }
+=======
+
+  
+>>>>>>> 828f236e78a66e0e7f60932157a5f08985d9238d
 
   reservaConfirmModal = false;
   reservaCarroSelecionado?: Carro;
