@@ -31,4 +31,12 @@ export class CarroService {
     criarCarro(payload: Partial<Carro>) {
         return this.http.post<Carro>(this.baseUrl, payload);
     }
+
+    atualizarCarro(id: number | string, payload: Partial<Carro>) {
+        return this.http.put<Carro>(`${this.baseUrl}/${id}`, payload);
+    }
+
+    deletarCarro(id: number | string) {
+        return this.http.delete<void>(`${this.baseUrl}/${id}`);
+    }
 }

@@ -13,8 +13,9 @@ import { Carro, CarroService } from '../../services/carro.service';
 export class CardCarroComponent implements OnInit {
   @Input() carro?: Carro;
   @Input() id?: number | string;
-  @Input() contexto: 'inicio' | 'filtro' = 'inicio';
+  @Input() contexto: 'inicio' | 'filtro' | 'central' = 'inicio';
   @Output() reservar = new EventEmitter<Carro>();
+  @Output() verMais = new EventEmitter<Carro>();
 
   carregando = false;
   erro = false;
@@ -39,5 +40,9 @@ export class CardCarroComponent implements OnInit {
 
   aoReservar() {
     if (this.carro) this.reservar.emit(this.carro);
+  }
+
+  aoVerMais() {
+    if (this.carro) this.verMais.emit(this.carro);
   }
 }

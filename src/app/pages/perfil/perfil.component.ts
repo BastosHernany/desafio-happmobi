@@ -7,11 +7,12 @@ import { Router } from '@angular/router';
 import { AutenticacaoService } from '../../services/autenticacao.service';
 import { UsuarioService, Usuario } from '../../services/usuario.service';
 import { MenuComponent } from "../../components/menu/menu.component";
+import { HeaderComponent } from '../../components/header/header.component';
 
 @Component({
   selector: 'app-perfil',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, MenuComponent],
+  imports: [CommonModule, FormsModule, RouterModule, MenuComponent, HeaderComponent],
   templateUrl: './perfil.component.html',
   styleUrl: './perfil.component.css'
 })

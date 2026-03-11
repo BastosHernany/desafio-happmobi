@@ -1,1 +1,148 @@
-<p>central works!</p>
+<app-header></app-header>
+<main class="p-4 pt-6 pb-24">
+	<div class="max-w-6xl mx-auto">
+		<div class="flex items-center justify-between mb-6">
+			<h1 class="text-2xl font-semibold">Central</h1>
+			<button (click)="abrirModalAdicionar()" class="inline-flex items-center gap-2 bg-rose-600 hover:bg-rose-700 text-white px-4 py-2 rounded-lg cursor-pointer">
+				<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+				</svg>
+				Adicionar veículo
+			</button>
+		</div>
+
+		<div class="mb-4">
+			<p class="text-sm text-slate-600">Gerencie os veículos: editar, remover ou cadastrar novos.</p>
+		</div>
+
+		<div *ngIf="sucessoMensagem" class="mb-4 text-green-600">{{ sucessoMensagem }}</div>
+
+		<section>
+			<div *ngIf="carros?.length === 0" class="text-center text-slate-500">Nenhum veículo encontrado.</div>
+
+			<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+				<app-card-carro *ngFor="let c of carros" [carro]="c" contexto="central" (verMais)="abrirDetalhes($event)"></app-card-carro>
+			</div>
+		</section>
+
+
+		<div *ngIf="mostrandoModalAdicionar" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+			<div class="w-full max-w-lg bg-white rounded-lg shadow-lg p-6">
+				<h3 class="text-lg font-semibold mb-4">Adicionar veículo</h3>
+				<div class="grid grid-cols-1 gap-3">
+					<label class="text-sm">Nome
+						<input [(ngModel)]="novoVeiculo.name" class="w-full mt-1 border rounded px-3 py-2" />
+					</label>
+
+					<label class="text-sm">Ano do modelo
+						<input [(ngModel)]="novoVeiculo.year" class="w-full mt-1 border rounded px-3 py-2" />
+					</label>
+
+					<label class="text-sm">Tipo
+						<select [(ngModel)]="novoVeiculo.type" class="w-full mt-1 border rounded px-3 py-2">
+							<option value="">Selecione</option>
+							<option *ngFor="let t of carroceriasOptions" [value]="t">{{ t }}</option>
+						</select>
+					</label>
+
+					<label class="text-sm">Motor
+						<select [(ngModel)]="novoVeiculo.engine" class="w-full mt-1 border rounded px-3 py-2">
+							<option value="">Selecione</option>
+							<option *ngFor="let m of motoresOptions" [value]="m">{{ 'Motor ' + m }}</option>
+						</select>
+					</label>
+
+					<label class="text-sm">Lugares
+						<select [(ngModel)]="novoVeiculo.size" class="w-full mt-1 border rounded px-3 py-2">
+							<option value="">Selecione</option>
+							<option *ngFor="let l of lugaresOptions" [value]="l">{{ l }}</option>
+						</select>
+					</label>
+
+					<div *ngIf="erroMensagem" class="mt-2 text-sm text-rose-600">{{ erroMensagem }}</div>
+
+					<label class="text-sm">URL da imagem (opcional)
+						<input [(ngModel)]="novoVeiculo.imageUrl" class="w-full mt-1 border rounded px-3 py-2" />
+					</label>
+				</div>
+
+				<div class="mt-4 flex justify-end gap-3">
+					<button (click)="fecharModalAdicionar()" class="px-4 py-2 rounded border cursor-pointer">Cancelar</button>
+					<button (click)="salvarCarro()" class="px-4 py-2 rounded bg-rose-600 text-white cursor-pointer">Salvar</button>
+				</div>
+			</div>
+		</div>
+
+
+		<div *ngIf="modalConfirmDelete" class="fixed inset-0 z-60 flex items-center justify-center bg-black/60">
+			<div class="bg-white rounded-lg p-6 max-w-sm w-full">
+				<h3 class="text-lg font-semibold mb-3">Excluir veículo</h3>
+				<p class="mb-4">Deseja realmente excluir este veículo?</p>
+				<div class="flex justify-end gap-3">
+					<button (click)="confirmarDeleteResposta(false)" class="px-4 py-2 rounded bg-gray-100 cursor-pointer">Cancelar</button>
+					<button (click)="confirmarDeleteResposta(true)" class="px-4 py-2 rounded bg-rose-600 text-white cursor-pointer">Excluir</button>
+				</div>
+			</div>
+		</div>
+
+
+		<div *ngIf="mostrandoDetalhes && carroSelecionado" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+			<div class="w-full max-w-2xl bg-white rounded-lg shadow-lg p-6">
+				<div class="flex items-center justify-between mb-4">
+					<h3 class="text-lg font-semibold">Detalhes do veículo</h3>
+					<button (click)="fecharDetalhes()" class="text-slate-500 cursor-pointer">Fechar</button>
+				</div>
+
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+					<div>
+						<img *ngIf="carroSelecionado.imageUrl; else fromAssets" [src]="carroSelecionado.imageUrl" [alt]="carroSelecionado.name" class="w-full h-64 object-cover rounded" />
+						<ng-template #fromAssets>
+							<img *ngIf="carroSelecionado.imagem" [src]="'assets/carros/' + carroSelecionado.imagem" [alt]="carroSelecionado.name" class="w-full h-64 object-contain rounded" />
+						</ng-template>
+					</div>
+
+					<div>
+						<label class="text-sm">Nome
+							<input [(ngModel)]="carroEdicao.name" class="w-full mt-1 border rounded px-3 py-2" />
+						</label>
+
+						<label class="text-sm mt-2">Ano
+							<input [(ngModel)]="carroEdicao.year" class="w-full mt-1 border rounded px-3 py-2" />
+						</label>
+
+						<label class="text-sm mt-2">Tipo
+							<select [(ngModel)]="carroEdicao.type" class="w-full mt-1 border rounded px-3 py-2">
+								<option value="">Selecione</option>
+								<option *ngFor="let t of carroceriasOptions" [value]="t">{{ t }}</option>
+							</select>
+						</label>
+
+						<label class="text-sm mt-2">Motor
+							<select [(ngModel)]="carroEdicao.engine" class="w-full mt-1 border rounded px-3 py-2">
+								<option value="">Selecione</option>
+								<option *ngFor="let m of motoresOptions" [value]="m">{{ 'Motor ' + m }}</option>
+							</select>
+						</label>
+
+						<label class="text-sm mt-2">Lugares
+							<select [(ngModel)]="carroEdicao.size" class="w-full mt-1 border rounded px-3 py-2">
+								<option value="">Selecione</option>
+								<option *ngFor="let l of lugaresOptions" [value]="l">{{ l }}</option>
+							</select>
+						</label>
+
+						<div *ngIf="erroMensagem" class="mt-2 text-sm text-rose-600">{{ erroMensagem }}</div>
+
+						<div class="mt-4 flex justify-between">
+							<button (click)="confirmarDeletar()" class="px-4 py-2 rounded bg-gray-100 text-rose-600 cursor-pointer">Excluir</button>
+							<button (click)="atualizarCarro()" class="px-4 py-2 rounded bg-[#0f2a35] hover:bg-[#082026] text-white cursor-pointer">Salvar alterações</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</main>
+
+<app-menu *ngIf="!mostrandoModalAdicionar && !mostrandoDetalhes && !modalConfirmDelete"></app-menu>
