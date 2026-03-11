@@ -28,15 +28,24 @@
         </div>
 
 
-        <section class="mt-8">
+        <section class="mt-8" *ngIf="carrosReservados && carrosReservados.length > 0">
             <h3 class="text-lg font-semibold text-slate-800 mb-4">Últimas reservas</h3>
 
             <div class="flex gap-4 overflow-x-auto pb-4 no-scrollbar touch-pan-x cursor-grab" appDragScroll>
-                <ng-container *ngIf="carros$ | async as carros">
-                    <app-card-carro *ngFor="let c of carros.slice(0,2)" [carro]="c" [contexto]="'inicio'"></app-card-carro>
+                <ng-container>
+                    <app-card-carro *ngFor="let c of carrosReservados" [carro]="c" [contexto]="'inicio'"></app-card-carro>
                 </ng-container>
             </div>
         </section>
+
+        <div class="mt-8" *ngIf="!carregandoReservas && (!carrosReservados || carrosReservados.length === 0)">
+            <div class="bg-white rounded-lg p-6 text-center shadow">
+                <p class="text-slate-700 mb-4">Você não tem nenhuma reserva, gostaria de fazer uma agora?</p>
+                <div class="flex justify-center">
+                    <button routerLink="/filtro" class="bg-rose-600 text-white rounded-full px-6 py-3 shadow-lg flex items-center gap-3 cursor-pointer">Reservar agora</button>
+                </div>
+            </div>
+        </div>
 
 
         <div class="mt-8 flex justify-center">

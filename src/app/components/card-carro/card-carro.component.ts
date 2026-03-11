@@ -12,7 +12,7 @@ import { Carro, CarroService } from '../../services/carro.service';
 
 export class CardCarroComponent implements OnInit {
   @Input() carro?: Carro;
-  @Input() id?: number;
+  @Input() id?: number | string;
   @Input() contexto: 'inicio' | 'filtro' = 'inicio';
   @Output() reservar = new EventEmitter<Carro>();
 

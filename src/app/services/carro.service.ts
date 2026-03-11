@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Carro {
-    id: number;
+    id?: number | string;
     name: string;
     year: string;
     type: string;
@@ -24,7 +24,7 @@ export class CarroService {
         return this.http.get<Carro[]>(this.baseUrl);
     }
 
-    obterPorId(id: number): Observable<Carro> {
+    obterPorId(id: number | string): Observable<Carro> {
         return this.http.get<Carro>(`${this.baseUrl}/${id}`);
     }
 

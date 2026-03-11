@@ -3,12 +3,14 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MenuComponent } from '../../components/menu/menu.component';
 import { CardCarroComponent } from '../../components/card-carro/card-carro.component';
-import { Observable } from 'rxjs';
+import { Observable, forkJoin, of } from 'rxjs';
 import { Carro, CarroService } from '../../services/carro.service';
 import { ArrastarScrollDirective } from '../../directives/drag-scroll.directive';
 import { RouterModule } from '@angular/router';
 import { AutenticacaoService } from '../../services/autenticacao.service';
 import { Usuario } from '../../services/usuario.service';
+import { ReservaService, Reserva } from '../../services/reserva.service';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-inicio',
@@ -18,11 +20,13 @@ import { Usuario } from '../../services/usuario.service';
   styleUrl: './inicio.component.css'
 })
 export class InicioComponent {
-  carros$: Observable<Carro[]>;
+  carros$: Observable<Carro[]> | null = null;
+  carrosReservados: Carro[] = [];
 
   usuario: Usuario | null = null;
   nomeUsuario = 'Usuário';
   fotoUsuario = 'assets/avatar.png';
+  carregandoReservas = true;
 
   mostrandoModalAdicionar = false;
   sucessoMensagem = '';
@@ -50,13 +54,46 @@ export class InicioComponent {
   motoresOptions: string[] = ['1.0', '1.4', '1.6', '1.8', '2.0'];
   lugaresOptions: string[] = ['02', '03', '04', '05', '06', '07'];
 
-  constructor(private carroService: CarroService, private auth: AutenticacaoService) {
-    this.carros$ = this.carroService.listarCarros();
+  constructor(
+    private carroService: CarroService,
+    private auth: AutenticacaoService,
+    private reservaService: ReservaService
+  ) {
     const u = this.auth.getUser();
     if (u) {
       this.usuario = u as Usuario;
       this.nomeUsuario = this.usuario.nome || 'Usuário';
       this.fotoUsuario = this.usuario.imagemUrl || 'assets/avatar.png';
+
+      // carregar reservas do usuário e mapear para carros
+      this.reservaService.listarPorUsuario(this.usuario.id!).pipe(
+        switchMap((reservas: Reserva[]) => {
+          if (!reservas || reservas.length === 0) {
+            this.carrosReservados = [];
+            this.carros$ = null;
+            this.carregandoReservas = false;
+            return of([]);
+          }
+
+          const chamadas = reservas.map(r => this.carroService.obterPorId(r.carroId as string | number));
+          return forkJoin(chamadas);
+        })
+      ).subscribe({
+        next: (carros: any) => {
+          // forkJoin retorna array dos carros
+          this.carrosReservados = carros || [];
+          this.carregandoReservas = false;
+        },
+        error: () => {
+          this.carrosReservados = [];
+          this.carregandoReservas = false;
+        }
+      });
+    } else {
+      // sem usuário autenticado, não mostrar reservas
+      this.carrosReservados = [];
+      this.carros$ = null;
+      this.carregandoReservas = false;
     }
   }
 
