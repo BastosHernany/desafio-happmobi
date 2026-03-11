@@ -1,1 +1,25 @@
-<p>card-carro works!</p>
+<article class="w-[241px] h-[319px] bg-white rounded-[10px] shadow-md overflow-hidden">
+	<div class="w-full h-[160px] bg-gray-100 flex items-center justify-center overflow-hidden">
+		<div *ngIf="loading" class="w-full h-full flex items-center justify-center">Carregando...</div>
+		<div *ngIf="erro" class="w-full h-full flex items-center justify-center text-red-500">Erro ao carregar</div>
+
+		<ng-container *ngIf="!loading && !erro">
+			<img *ngIf="carro?.imageUrl; else fromAssets" [src]="carro?.imageUrl" [alt]="carro?.name"
+				class="w-full h-full object-cover" />
+			<ng-template #fromAssets>
+				<img *ngIf="carro?.imagem; else placeholder" [src]="'assets/carros/' + carro?.imagem" [alt]="carro?.name"
+					class="w-full h-full object-contain" />
+			</ng-template>
+			<ng-template #placeholder>
+				<div class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400">Sem imagem</div>
+			</ng-template>
+		</ng-container>
+	</div>
+
+	<div class="p-4">
+		<h3 class="text-[16px] font-semibold text-slate-800">{{ carro?.name || '-' }} - {{ carro?.year || '' }}</h3>
+		<p class="text-sm text-slate-600 mt-2">{{ carro?.type || '-' }}</p>
+		<p class="text-sm text-slate-600">Motor {{ carro?.engine || '' }}</p>
+		<p class="text-sm text-slate-600">{{ carro?.size ? (carro?.size + ' Lugares') : 'Lugares' }}</p>
+	</div>
+</article>

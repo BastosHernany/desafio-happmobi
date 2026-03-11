@@ -1,1 +1,45 @@
-<p>login works!</p>
+<section class="min-h-screen bg-[#0f2a35] flex items-center justify-center relative overflow-hidden px-6">
+	<img src="assets/marca-dagua.png" alt="Marca d'água Logo Guardians" aria-hidden="true"
+		class="pointer-events-none absolute right-6 top-0 rigth-0 opacity-10 object-contain w-72.25 h-79.75 sm:w-85 sm:h-94" />
+
+	<main class="w-full max-w-sm">
+		<header class="flex flex-col items-center text-center mb-6">
+			<img src="assets/logo.png" alt="Logo Guardians" class="w-38.25 h-30.25  mb-3" />
+		</header>
+
+		<form class="space-y-4" aria-label="Formulário de login">
+			<div>
+				<label for="username" class="sr-only">Usuário</label>
+				<input id="username" name="username" type="text" placeholder="Usuário"
+					class="w-full bg-white rounded-full py-3 px-6 placeholder-gray-400 text-gray-700 shadow-md focus:outline-none focus:ring-2 focus:ring-white/30" />
+			</div>
+
+			<div>
+				<label for="password" class="sr-only">Senha</label>
+				<input id="password" name="password" type="password" placeholder="Senha"
+					class="w-full bg-white rounded-full py-3 px-6 placeholder-gray-400 text-gray-700 shadow-md focus:outline-none focus:ring-2 focus:ring-white/30" />
+			</div>
+
+			<div>
+				<button type="submit"
+					class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-full shadow-xl uppercase tracking-wider">ENTRAR</button>
+			</div>
+
+			<div class="text-center">
+				<a href="#" class="text-sm text-white/80 underline">Esqueci minha senha</a>
+			</div>
+		</form>
+
+		<p class="text-center text-sm text-white/70 mt-12">Ainda não tem cadastro? <a href="#" class="underline text-white">Criar conta</a></p>
+	</main>
+
+		<div class="mt-6 grid grid-cols-1 gap-4">
+			<app-card-carro [id]="1"></app-card-carro>
+			<app-card-carro [id]="2"></app-card-carro>
+			<app-card-carro [id]="3"></app-card-carro>
+            <app-card-carro [id]="4"></app-card-carro>
+            <app-card-carro [id]="5"></app-card-carro>
+		</div>
+</section>
+
+
