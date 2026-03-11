@@ -58,7 +58,7 @@
 
 			<div class="md:col-span-2">
 				<label class="text-sm text-slate-600">URL da foto</label>
-				<div *ngIf="!editando" class="text-sm text-slate-700 break-words">{{ imagemUrl }}</div>
+				<div *ngIf="!editando" class="text-sm text-slate-700 wrap-break-word">{{ imagemUrl }}</div>
 				<input *ngIf="editando" [(ngModel)]="imagemUrl" class="w-full mt-1 border rounded px-3 py-2" />
 			</div>
 		</div>
