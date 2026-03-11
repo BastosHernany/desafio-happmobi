@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AuthService } from '../../services/auth.service';
+import { AutenticacaoService } from '../../services/autenticacao.service';
 import { UsuarioService } from '../../services/usuario.service';
 
 @Component({
@@ -17,7 +17,7 @@ export class LoginComponent {
   senha = '';
   erro: string | null = null;
 
-  constructor(private router: Router, private usuarioService: UsuarioService, private auth: AuthService) {}
+  constructor(private router: Router, private usuarioService: UsuarioService, private auth: AutenticacaoService) {}
 
   login() {
     this.erro = null;

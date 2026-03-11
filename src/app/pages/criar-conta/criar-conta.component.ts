@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { UsuarioService } from '../../services/usuario.service';
 import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
+import { AutenticacaoService } from '../../services/autenticacao.service';
 
 @Component({
   selector: 'app-criar-conta',
@@ -24,7 +24,7 @@ export class CriarContaComponent {
   erro = '';
   sucesso = '';
 
-  constructor(private usuarioService: UsuarioService, private auth: AuthService, private router: Router) {}
+  constructor(private usuarioService: UsuarioService, private auth: AutenticacaoService, private router: Router) {}
 
   validarEmail(email: string) {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

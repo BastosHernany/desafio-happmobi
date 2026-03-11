@@ -7,6 +7,8 @@ import { Observable } from 'rxjs';
 import { Carro, CarroService } from '../../services/carro.service';
 import { ArrastarScrollDirective } from '../../directives/drag-scroll.directive';
 import { RouterModule } from '@angular/router';
+import { AutenticacaoService } from '../../services/autenticacao.service';
+import { Usuario } from '../../services/usuario.service';
 
 @Component({
   selector: 'app-inicio',
@@ -17,6 +19,10 @@ import { RouterModule } from '@angular/router';
 })
 export class InicioComponent {
   carros$: Observable<Carro[]>;
+
+  usuario: Usuario | null = null;
+  nomeUsuario = 'Usuário';
+  fotoUsuario = 'assets/avatar.png';
 
   mostrandoModalAdicionar = false;
   sucessoMensagem = '';
@@ -44,8 +50,14 @@ export class InicioComponent {
   motoresOptions: string[] = ['1.0', '1.4', '1.6', '1.8', '2.0'];
   lugaresOptions: string[] = ['02', '03', '04', '05', '06', '07'];
 
-  constructor(private carroService: CarroService) {
+  constructor(private carroService: CarroService, private auth: AutenticacaoService) {
     this.carros$ = this.carroService.listarCarros();
+    const u = this.auth.getUser();
+    if (u) {
+      this.usuario = u as Usuario;
+      this.nomeUsuario = this.usuario.nome || 'Usuário';
+      this.fotoUsuario = this.usuario.imagemUrl || 'assets/avatar.png';
+    }
   }
 
   abrirModalAdicionar() {
