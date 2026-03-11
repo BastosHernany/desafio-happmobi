@@ -7,16 +7,16 @@
 			<img src="assets/logo.png" alt="Logo Guardians" class="w-38.25 h-30.25  mb-3" />
 		</header>
 
-		<form class="space-y-4" aria-label="Formulário de login">
+		<form (ngSubmit)="login()" class="space-y-4" aria-label="Formulário de login">
 			<div>
-				<label for="username" class="sr-only">Usuário</label>
-				<input id="username" name="username" type="text" placeholder="Usuário"
+				<label for="email" class="sr-only">Email</label>
+				<input id="email" name="email" type="email" placeholder="Email" [(ngModel)]="email"
 					class="w-full bg-white rounded-full py-3 px-6 placeholder-gray-400 text-gray-700 shadow-md focus:outline-none focus:ring-2 focus:ring-white/30" />
 			</div>
 
 			<div>
-				<label for="password" class="sr-only">Senha</label>
-				<input id="password" name="password" type="password" placeholder="Senha"
+				<label for="senha" class="sr-only">Senha</label>
+				<input id="senha" name="senha" type="password" placeholder="Senha" [(ngModel)]="senha"
 					class="w-full bg-white rounded-full py-3 px-6 placeholder-gray-400 text-gray-700 shadow-md focus:outline-none focus:ring-2 focus:ring-white/30" />
 			</div>
 
@@ -29,6 +29,8 @@
 				<a href="#" class="text-sm text-white/80 underline">Esqueci minha senha</a>
 			</div>
 		</form>
+
+		<div *ngIf="erro" class="mt-4 text-center text-rose-500">{{ erro }}</div>
 
 		<p class="text-center text-sm text-white/70 mt-12">Ainda não tem cadastro? <a routerLink="/criar-conta" class="underline text-white cursor-pointer">Criar conta</a></p>
 	</main>
