@@ -1,11 +1,12 @@
-<article class="w-[241px] h-[319px] bg-white rounded-[10px] shadow-md overflow-hidden">
-	<div class="w-full h-[160px] bg-gray-100 flex items-center justify-center overflow-hidden">
-		<div *ngIf="loading" class="w-full h-full flex items-center justify-center">Carregando...</div>
+<article class="w-60.25 h-79.75 bg-white rounded-[10px] shadow-md overflow-hidden">
+	<div class="w-full h-40 bg-gray-100 flex items-center justify-center overflow-hidden">
+		<div *ngIf="carregando" class="w-full h-full flex items-center justify-center">Carregando...</div>
 		<div *ngIf="erro" class="w-full h-full flex items-center justify-center text-red-500">Erro ao carregar</div>
 
-		<ng-container *ngIf="!loading && !erro">
+		<ng-container *ngIf="!carregando && !erro">
 			<img *ngIf="carro?.imageUrl; else fromAssets" [src]="carro?.imageUrl" [alt]="carro?.name"
 				class="w-full h-full object-cover" />
+
 			<ng-template #fromAssets>
 				<img *ngIf="carro?.imagem; else placeholder" [src]="'assets/carros/' + carro?.imagem" [alt]="carro?.name"
 					class="w-full h-full object-contain" />

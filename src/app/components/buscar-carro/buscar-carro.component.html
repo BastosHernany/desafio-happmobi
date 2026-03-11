@@ -1,1 +1,11 @@
-<p>buscar-carro works!</p>
+<section class="w-full">
+	<ng-container *ngIf="carros$ | async as carros; else carregando">
+		<div class="flex gap-4 overflow-x-auto pb-4 no-scrollbar touch-pan-x cursor-grab" appArrastarScroll>
+			<app-card-carro *ngFor="let c of carros" [carro]="c"></app-card-carro>
+		</div>
+	</ng-container>
+
+	<ng-template #carregando>
+		<div class="text-center text-white/80">Carregando carros...</div>
+	</ng-template>
+</section>
