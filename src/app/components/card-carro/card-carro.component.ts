@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Carro, CarroService } from '../../services/carro.service';
 
@@ -13,6 +13,8 @@ import { Carro, CarroService } from '../../services/carro.service';
 export class CardCarroComponent implements OnInit {
   @Input() carro?: Carro;
   @Input() id?: number;
+  @Input() contexto: 'inicio' | 'filtro' = 'inicio';
+  @Output() reservar = new EventEmitter<Carro>();
 
   carregando = false;
   erro = false;
@@ -33,5 +35,9 @@ export class CardCarroComponent implements OnInit {
           },
       });
     }
+  }
+
+  aoReservar() {
+    if (this.carro) this.reservar.emit(this.carro);
   }
 }

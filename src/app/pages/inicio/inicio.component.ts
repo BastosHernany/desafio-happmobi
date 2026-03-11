@@ -5,11 +5,12 @@ import { CardCarroComponent } from '../../components/card-carro/card-carro.compo
 import { Observable } from 'rxjs';
 import { Carro, CarroService } from '../../services/carro.service';
 import { ArrastarScrollDirective } from '../../directives/drag-scroll.directive';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-inicio',
   standalone: true,
-  imports: [CommonModule, MenuComponent, CardCarroComponent, ArrastarScrollDirective],
+  imports: [CommonModule, MenuComponent, CardCarroComponent, ArrastarScrollDirective, RouterModule],
   templateUrl: './inicio.component.html',
   styleUrl: './inicio.component.css'
 })

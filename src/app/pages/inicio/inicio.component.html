@@ -21,7 +21,7 @@
                 <span class="text-slate-600">Buscar carro</span>
             </button>
 
-            <button class="w-24 bg-white shadow rounded-xl py-3 flex items-center justify-center">
+            <button routerLink="/filtro" class="w-24 bg-white shadow rounded-xl py-3 flex items-center justify-center cursor-pointer">
                 <img src="assets/icones/filtro.svg" alt="Filtrar" class="w-5 h-5" />
                 <span class="text-slate-600">Filtrar</span> 
             </button>
@@ -33,7 +33,7 @@
 
             <div class="flex gap-4 overflow-x-auto pb-4 no-scrollbar touch-pan-x cursor-grab" appDragScroll>
                 <ng-container *ngIf="carros$ | async as carros">
-                    <app-card-carro *ngFor="let c of carros.slice(0,2)" [carro]="c"></app-card-carro>
+                    <app-card-carro *ngFor="let c of carros.slice(0,2)" [carro]="c" [contexto]="'inicio'"></app-card-carro>
                 </ng-container>
             </div>
         </section>

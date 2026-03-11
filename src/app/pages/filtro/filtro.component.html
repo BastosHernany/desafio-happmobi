@@ -20,7 +20,7 @@
 		<section *ngIf="carrosEncontrados.length > 0" class="mb-6">
 			<h3 class="text-lg font-semibold text-slate-800 mb-4">Resultados</h3>
 			<div class="flex gap-4 overflow-x-auto pb-4 no-scrollbar touch-pan-x">
-				<app-card-carro *ngFor="let c of carrosEncontrados" [carro]="c"></app-card-carro>
+				<app-card-carro *ngFor="let c of carrosEncontrados" [carro]="c" [contexto]="'filtro'"></app-card-carro>
 			</div>
 		</section>
 
