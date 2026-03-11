@@ -24,11 +24,11 @@
 		<p class="text-sm text-slate-600">{{ carro?.size ? (carro?.size + ' Lugares') : 'Lugares' }}</p>
 
 				<div class="mt-3">
-					<button *ngIf="carro && (contexto === 'inicio' || contexto === 'filtro')" (click)="aoReservar()" class="w-full bg-rose-600 hover:bg-rose-700 text-white py-2 rounded-lg text-sm">
+					<button *ngIf="carro && (contexto === 'inicio' || contexto === 'filtro')" (click)="aoReservar()" class="w-full bg-rose-600 hover:bg-rose-700 text-white py-2 rounded-lg text-sm cursor-pointer">
 						{{ contexto === 'inicio' ? 'Reservar novamente' : 'Reservar agora' }}
 					</button>
 
-					<button *ngIf="carro && contexto === 'central'" (click)="aoVerMais()" class="mt-2 w-full bg-[#0f2a35] hover:bg-[#082026] text-white py-2 rounded-lg text-sm">
+					<button *ngIf="carro && contexto === 'central'" (click)="aoVerMais()" class="mt-2 w-full bg-[#0f2a35] hover:bg-[#082026] text-white py-2 rounded-lg text-sm cursor-pointer">
 							Ver mais
 					</button>
 				</div>

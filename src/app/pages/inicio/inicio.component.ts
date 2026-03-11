@@ -21,6 +21,8 @@ import { switchMap } from 'rxjs/operators';
 export class InicioComponent {
   carros$: Observable<Carro[]> | null = null;
   carrosReservados: Carro[] = [];
+  carrosAtivos: Carro[] = [];
+  temReservasAtivas = false;
 
   usuario: Usuario | null = null;
   nomeUsuario = 'Usuário';
@@ -53,8 +55,9 @@ export class InicioComponent {
 
       this.reservaService.listarPorUsuario(this.usuario.id!).pipe(
         switchMap((reservas: Reserva[]) => {
+          this.temReservasAtivas = !!(reservas && reservas.length > 0);
           if (!reservas || reservas.length === 0) {
-            this.carrosReservados = [];
+            this.carrosAtivos = [];
             this.carros$ = null;
             this.carregandoReservas = false;
             return of([]);
@@ -65,11 +68,22 @@ export class InicioComponent {
         })
       ).subscribe({
         next: (carros: any) => {
-          this.carrosReservados = carros || [];
+          this.carrosAtivos = carros || [];
+          // carregar histórico local e mesclar (manter únicos)
+          const historico = this.loadHistoricoReservas();
+          const mapa = new Map<string | number, Carro>();
+          // primeiro as reservas ativas (mais recentes primeiro)
+          (this.carrosAtivos || []).forEach((c: Carro) => mapa.set(String(c.id), c));
+          // depois completar com histórico se não existir
+          (historico || []).forEach((h: Carro) => {
+            if (!mapa.has(String(h.id))) mapa.set(String(h.id), h);
+          });
+          this.carrosReservados = Array.from(mapa.values());
           this.carregandoReservas = false;
         },
         error: () => {
           this.carrosReservados = [];
+          this.carrosAtivos = [];
           this.carregandoReservas = false;
         }
       });
@@ -174,6 +188,11 @@ export class InicioComponent {
       next: (r) => {
         this.sucessoReserva = 'Reserva criada com sucesso.';
         this.carrosReservados.unshift(c);
+        // marcar que há reservas ativas e atualizar lista ativa
+        this.temReservasAtivas = true;
+        this.carrosAtivos.unshift(c);
+        // salvar no histórico local para manter o carro nas "últimas reservas" mesmo após finalizar
+        this.saveHistoricoReserva(c);
         this.searchResults = this.searchResults.filter((x) => x.id !== c.id);
         this.reservaConfirmModal = false;
         this.reservaCarroSelecionado = undefined;
@@ -186,5 +205,29 @@ export class InicioComponent {
         setTimeout(() => (this.erroReserva = ''), 3000);
       }
     });
+  }
+
+  private HISTORICO_KEY = 'ultimasReservas';
+
+  private loadHistoricoReservas(): Carro[] {
+    try {
+      const raw = localStorage.getItem(this.HISTORICO_KEY);
+      if (!raw) return [];
+      return JSON.parse(raw) as Carro[];
+    } catch {
+      return [];
+    }
+  }
+
+  private saveHistoricoReserva(c: Carro) {
+    try {
+      const atual = this.loadHistoricoReservas();
+      const filtrado = (atual || []).filter((x) => String(x.id) !== String(c.id));
+      filtrado.unshift(c);
+      // limitar histórico para os 12 mais recentes
+      localStorage.setItem(this.HISTORICO_KEY, JSON.stringify(filtrado.slice(0, 12)));
+    } catch {
+      // ignore
+    }
   }
 }

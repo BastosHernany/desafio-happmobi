@@ -77,7 +77,7 @@
             </div>
         </div>
 
-        <div class="mt-8" *ngIf="!carregandoReservas && (!carrosReservados || carrosReservados.length === 0)">
+        <div class="mt-8" *ngIf="!carregandoReservas && !temReservasAtivas">
             <div class="bg-white rounded-lg p-6 text-center shadow">
                 <p class="text-slate-700 mb-4">Você não tem nenhuma reserva, gostaria de fazer uma agora?</p>
                 <div class="flex justify-center">
