@@ -19,9 +19,16 @@
 
 		<section *ngIf="carrosEncontrados.length > 0" class="mb-6">
 			<h3 class="text-lg font-semibold text-slate-800 mb-4">Resultados</h3>
-			<div class="flex gap-4 overflow-x-auto pb-4 no-scrollbar touch-pan-x">
-				<app-card-carro *ngFor="let c of carrosEncontrados" [carro]="c" [contexto]="'filtro'"></app-card-carro>
+			<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+				<div *ngFor="let c of carrosEncontrados" class="w-full">
+					<app-card-carro [carro]="c" [contexto]="'filtro'"></app-card-carro>
+				</div>
 			</div>
+		</section>
+
+		<section *ngIf="naoEncontrado && carrosEncontrados.length === 0" class="mb-6 text-center">
+			<p class="text-slate-700 mb-4">Não existem nenhum carro com esse especificidade, gostaria de adicionar um novo veiculo?</p>
+			<button (click)="abrirModalAdicionar()" class="mx-auto bg-rose-600 text-white px-6 py-2 rounded-lg">Adicionar veículo</button>
 		</section>
 
 
@@ -71,6 +78,53 @@
 		</section>
 
 	</main>
+
+	<!-- Modal adicionar veículo -->
+	<div *ngIf="mostrandoModalAdicionar" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+		<div class="w-full max-w-lg bg-white rounded-lg shadow-lg p-6">
+			<h3 class="text-lg font-semibold mb-4">Adicionar veículo</h3>
+			<div class="grid grid-cols-1 gap-3">
+				<label class="text-sm">Nome
+					<input [(ngModel)]="novoVeiculo.name" class="w-full mt-1 border rounded px-3 py-2" />
+				</label>
+
+				<label class="text-sm">Ano do modelo
+					<input [(ngModel)]="novoVeiculo.year" class="w-full mt-1 border rounded px-3 py-2" />
+				</label>
+
+				<label class="text-sm">Tipo
+					<select [(ngModel)]="novoVeiculo.type" class="w-full mt-1 border rounded px-3 py-2">
+						<option value="">Selecione</option>
+						<option *ngFor="let t of carroceriasOptions" [value]="t">{{ t }}</option>
+					</select>
+				</label>
+
+				<label class="text-sm">Motor
+					<select [(ngModel)]="novoVeiculo.engine" class="w-full mt-1 border rounded px-3 py-2">
+						<option value="">Selecione</option>
+						<option *ngFor="let m of motoresOptions" [value]="m">{{ m }}</option>
+					</select>
+				</label>
+
+				<label class="text-sm">Quantidade de lugares
+					<select [(ngModel)]="novoVeiculo.size" class="w-full mt-1 border rounded px-3 py-2">
+						<option value="">Selecione</option>
+						<option *ngFor="let s of lugaresOptions" [value]="s">{{ s }}</option>
+					</select>
+				</label>
+
+				<label class="text-sm">URL da imagem
+					<input [(ngModel)]="novoVeiculo.imageUrl" class="w-full mt-1 border rounded px-3 py-2" />
+				</label>
+			</div>
+
+			<div class="mt-4 flex gap-3 justify-end">
+				<button (click)="fecharModalAdicionar()" class="px-4 py-2 rounded bg-gray-100">Cancelar</button>
+				<button (click)="salvarCarro()" class="px-4 py-2 rounded bg-rose-600 text-white">Salvar carro</button>
+			</div>
+			<div *ngIf="sucessoMensagem" class="mt-3 text-sm text-green-600">{{ sucessoMensagem }}</div>
+		</div>
+	</div>
 
 		<footer class="fixed bottom-4 left-0 right-0 px-6 z-30">
 			<div class="max-w-xl mx-auto">

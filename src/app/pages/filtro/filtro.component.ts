@@ -18,6 +18,17 @@ export class FiltroComponent {
   carrosEncontrados: Carro[] = [];
   carregando = false;
   naoEncontrado = false;
+  mostrandoModalAdicionar = false;
+  sucessoMensagem = '';
+
+  novoVeiculo: Partial<Carro> = {
+    name: '',
+    year: '',
+    type: '',
+    engine: '',
+    size: '',
+    imageUrl: ''
+  };
 
   selecionadasCarrocerias = new Set<string>();
   selecionadosMotores = new Set<string>();
@@ -119,6 +130,43 @@ export class FiltroComponent {
     this.carrosEncontrados = [];
     this.naoEncontrado = false;
     this.mostrarFormulario = true;
+  }
+
+  abrirModalAdicionar() {
+    this.mostrandoModalAdicionar = true;
+    this.sucessoMensagem = '';
+  }
+
+  fecharModalAdicionar() {
+    this.mostrandoModalAdicionar = false;
+    this.novoVeiculo = { name: '', year: '', type: '', engine: '', size: '', imageUrl: '' };
+  }
+
+  salvarCarro() {
+    const payload: Partial<Carro> = {
+      name: this.novoVeiculo.name || 'Sem nome',
+      year: this.novoVeiculo.year || '',
+      type: this.novoVeiculo.type || '',
+      engine: this.novoVeiculo.engine || '',
+      size: this.novoVeiculo.size || '',
+      imageUrl: this.novoVeiculo.imageUrl || undefined
+    };
+
+    this.carroService.criarCarro(payload).subscribe({
+      next: (c) => {
+        // mostrar sucesso e adicionar ao resultado
+        this.sucessoMensagem = 'Novo veiculo cadastrado com sucesso';
+        this.carrosEncontrados.unshift(c);
+        this.mostrandoModalAdicionar = false;
+        this.mostrarFormulario = false;
+        this.naoEncontrado = false;
+        setTimeout(() => (this.sucessoMensagem = ''), 3500);
+      },
+      error: () => {
+        this.sucessoMensagem = 'Erro ao cadastrar veículo';
+        setTimeout(() => (this.sucessoMensagem = ''), 3500);
+      }
+    });
   }
 
   cancelar() {

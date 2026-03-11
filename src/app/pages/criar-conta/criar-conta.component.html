@@ -1,0 +1,60 @@
+<section class="min-h-screen bg-[#0f2a35] flex items-center justify-center relative overflow-hidden px-6">
+	<img src="assets/marca-dagua.png" alt="Marca d'água" aria-hidden="true"
+		class="pointer-events-none absolute right-6 top-0 opacity-10 object-contain w-72.25 h-79.75 sm:w-85 sm:h-94" />
+
+	<main class="w-full max-w-sm">
+		<header class="flex flex-col items-center text-center mb-6">
+			<img src="assets/logo.png" alt="Logo" class="w-38.25 h-30.25 mb-3" />
+			<h2 class="text-white font-semibold">Crie uma nova conta</h2>
+		</header>
+
+		<form (ngSubmit)="cadastrar()" class="space-y-4 bg-transparent">
+			<div>
+				<label for="nome" class="sr-only">Nome Completo</label>
+				<input id="nome" name="nome" [(ngModel)]="nome" placeholder="Nome completo"
+					class="w-full bg-white rounded-full py-3 px-6 placeholder-gray-400 text-gray-700 shadow-md focus:outline-none focus:ring-2 focus:ring-white/30" />
+			</div>
+
+			<div>
+				<label for="dataNascimento" class="sr-only">Data de nascimento</label>
+				<input id="dataNascimento" name="dataNascimento" type="date" [(ngModel)]="dataNascimento"
+					class="w-full bg-white rounded-full py-3 px-6 placeholder-gray-400 text-gray-700 shadow-md focus:outline-none focus:ring-2 focus:ring-white/30" />
+			</div>
+
+			<div>
+				<label for="email" class="sr-only">Email</label>
+				<input id="email" name="email" type="email" [(ngModel)]="email" placeholder="Email"
+					class="w-full bg-white rounded-full py-3 px-6 placeholder-gray-400 text-gray-700 shadow-md focus:outline-none focus:ring-2 focus:ring-white/30" />
+			</div>
+
+			<div>
+				<label for="senha" class="sr-only">Senha</label>
+				<input id="senha" name="senha" type="password" [(ngModel)]="senha" placeholder="Senha"
+					class="w-full bg-white rounded-full py-3 px-6 placeholder-gray-400 text-gray-700 shadow-md focus:outline-none focus:ring-2 focus:ring-white/30" />
+			</div>
+
+			<div>
+				<label for="confirmaSenha" class="sr-only">Confirme a senha</label>
+				<input id="confirmaSenha" name="confirmaSenha" type="password" [(ngModel)]="confirmaSenha" placeholder="Confirme a senha"
+					class="w-full bg-white rounded-full py-3 px-6 placeholder-gray-400 text-gray-700 shadow-md focus:outline-none focus:ring-2 focus:ring-white/30" />
+			</div>
+
+			<div>
+				<label for="imagemUrl" class="sr-only">URL da imagem (opcional)</label>
+				<input id="imagemUrl" name="imagemUrl" [(ngModel)]="imagemUrl" placeholder="URL da imagem (opcional)"
+					class="w-full bg-white rounded-full py-3 px-6 placeholder-gray-400 text-gray-700 shadow-md focus:outline-none focus:ring-2 focus:ring-white/30" />
+			</div>
+
+			<div class="flex justify-between items-center mt-4">
+				<button type="button" (click)="cancelar()" class="text-white/80 underline cursor-pointer">Cancelar</button>
+				<button type="submit" class="w-40 bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-full shadow-xl uppercase tracking-wider cursor-pointer">CRIAR</button>
+			</div>
+
+			<div *ngIf="erro" class="mt-2 text-sm text-rose-600">{{ erro }}</div>
+			<div *ngIf="sucesso" class="mt-2 text-sm text-green-600">{{ sucesso }}</div>
+		</form>
+
+		<p class="text-center text-sm text-white/70 mt-6">Já tem cadastro? <a routerLink="/" class="underline text-white cursor-pointer">Entrar</a></p>
+	</main>
+</section>
+
