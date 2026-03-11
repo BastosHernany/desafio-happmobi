@@ -1,1 +1,102 @@
-<p>perfil works!</p>
+<header class="w-full bg-[#0f2a35] shadow-sm">
+	<div class="max-w-4xl mx-auto py-3 flex justify-center">
+						<a routerLink="/inicio" class="inline-block">
+							<img src="assets/logo.png" alt="Guardians" class="h-14 md:h-16 mx-auto" />
+						</a>
+	</div>
+</header>
+
+<section class="max-w-3xl mx-auto p-6">
+	<div class="flex items-center justify-between mb-4">
+		<a routerLink="/inicio" class="flex items-center gap-2 text-slate-700">
+			<button class="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-full cursor-pointer">
+				<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-rose-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+				</svg>
+				<span class="text-sm font-medium">Voltar</span>
+			</button>
+		</a>
+
+		<h1 class="text-2xl font-semibold">Meu perfil</h1>
+
+		<div class="w-24" aria-hidden="true"></div>
+	</div>
+
+	<div class="bg-white rounded-lg shadow p-6">
+		<div class="flex items-center gap-6">
+			<div class="w-24 h-24 rounded-full overflow-hidden shadow bg-gray-100 flex items-center justify-center">
+				<ng-container *ngIf="imagemUrl; else silhuetaPerfil">
+					<img [src]="imagemUrl" [alt]="nome" class="w-full h-full object-cover" />
+				</ng-container>
+				<ng-template #silhuetaPerfil>
+					<img src="assets/silueta.jpg" alt="Sem foto" class="w-full h-full object-cover" />
+				</ng-template>
+			</div>
+			<div class="flex-1">
+				<div class="mb-2">
+					<label class="text-sm text-slate-600">Nome</label>
+					<div *ngIf="!editando" class="text-lg font-medium">{{ nome }}</div>
+					<input *ngIf="editando" [(ngModel)]="nome" class="w-full mt-1 border rounded px-3 py-2" />
+				</div>
+
+				<div class="mb-2">
+					<label class="text-sm text-slate-600">Email</label>
+					<div *ngIf="!editando" class="text-sm text-slate-700">{{ email }}</div>
+					<input *ngIf="editando" type="email" [(ngModel)]="email" class="w-full mt-1 border rounded px-3 py-2" />
+				</div>
+			</div>
+		</div>
+
+		<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+			<div>
+				<label class="text-sm text-slate-600">Data de nascimento</label>
+				<div *ngIf="!editando" class="text-sm text-slate-700">{{ dataNascimento }}</div>
+				<input *ngIf="editando" type="date" [(ngModel)]="dataNascimento" class="w-full mt-1 border rounded px-3 py-2" />
+			</div>
+
+			<div>
+				<label class="text-sm text-slate-600">Senha</label>
+				<div *ngIf="!editando" class="text-sm text-slate-700">••••••••</div>
+				<input *ngIf="editando" type="password" [(ngModel)]="senha" class="w-full mt-1 border rounded px-3 py-2" />
+			</div>
+
+			<div class="md:col-span-2">
+				<label class="text-sm text-slate-600">URL da foto</label>
+				<div *ngIf="!editando" class="text-sm text-slate-700 break-words">{{ imagemUrl }}</div>
+				<input *ngIf="editando" [(ngModel)]="imagemUrl" class="w-full mt-1 border rounded px-3 py-2" />
+			</div>
+		</div>
+
+		<div class="mt-6 flex gap-3">
+			<button *ngIf="!editando" (click)="ativarEdicao()" class="bg-rose-600 text-white rounded-full px-6 py-2 cursor-pointer">Editar</button>
+			<button *ngIf="editando" (click)="solicitarSalvar()" class="bg-rose-600 text-white rounded-full px-6 py-2 cursor-pointer" >Salvar</button>
+			<button (click)="solicitarExcluir()" class="ml-auto bg-gray-100 rounded-full px-6 py-2 text-rose-600 cursor-pointer">Excluir conta</button>
+		</div>
+
+		<div *ngIf="mensagem" class="mt-4 text-sm text-green-600">{{ mensagem }}</div>
+	</div>
+
+	<div *ngIf="modalConfirmar" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+		<div class="bg-white rounded-lg p-6 max-w-sm w-full">
+			<h3 class="text-lg font-semibold mb-3">Confirmar alterações</h3>
+			<p class="mb-4">Deseja salvar as alterações no seu perfil?</p>
+			<div class="flex justify-end gap-3">
+				<button (click)="confirmarSalvar(false)" class="px-4 py-2 rounded bg-gray-100 cursor-pointer">Não</button>
+				<button (click)="confirmarSalvar(true)" class="px-4 py-2 rounded bg-rose-600 text-white cursor-pointer">Sim</button>
+			</div>
+		</div>
+	</div>
+
+	<div *ngIf="modalExcluir" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+		<div class="bg-white rounded-lg p-6 max-w-sm w-full">
+			<h3 class="text-lg font-semibold mb-3">Excluir conta</h3>
+			<p class="mb-4">Tem certeza que deseja excluir sua conta? Essa ação não pode ser desfeita.</p>
+			<div class="flex justify-end gap-3">
+				<button (click)="confirmarExcluir(false)" class="px-4 py-2 rounded bg-gray-100 cursor-pointer">Não</button>
+				<button (click)="confirmarExcluir(true)" class="px-4 py-2 rounded bg-rose-600 text-white cursor-pointer">Sim</button>
+			</div>
+		</div>
+	</div>
+
+    <app-menu></app-menu>
+</section>

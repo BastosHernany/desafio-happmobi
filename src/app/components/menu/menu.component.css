@@ -1,0 +1,13 @@
+.filter-red {
+	filter: invert(21%) sepia(92%) saturate(747%) hue-rotate(-6deg) brightness(95%) contrast(90%);
+}
+
+/* Estilo para link ativo do menu */
+.ativo img {
+	filter: invert(21%) sepia(92%) saturate(747%) hue-rotate(-6deg) brightness(95%) contrast(90%);
+}
+
+.ativo span {
+	color: #ef4444; /* vermelho similar a text-rose-600 */
+}
+

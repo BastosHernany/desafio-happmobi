@@ -25,4 +25,12 @@ export class UsuarioService {
     // json-server supports query params
     return this.http.get<Usuario[]>(`${this.baseUrl}?email=${encodeURIComponent(email)}&senha=${encodeURIComponent(senha)}`);
   }
+
+  atualizarUsuario(id: string | number, payload: Partial<Usuario>) {
+    return this.http.put<Usuario>(`${this.baseUrl}/${id}`, payload);
+  }
+
+  deletarUsuario(id: string | number) {
+    return this.http.delete(`${this.baseUrl}/${id}`);
+  }
 }

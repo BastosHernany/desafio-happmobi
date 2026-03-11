@@ -1,132 +1,131 @@
 {
-    "carros": [
-        {
-            "id": "1",
-            "name": "Partner",
-            "year": "2016",
-            "type": "Utilitário",
-            "engine": "1.6",
-            "size": "2",
-            "imagem": "partner.jpg"
-        },
-        {
-            "id": "2",
-            "name": "Fiorino",
-            "year": "2017",
-            "type": "Utilitário leve",
-            "engine": "1.6",
-            "size": "2",
-            "imagem": "fiorino.jpg"
-        },
-        {
-            "id": "3",
-            "name": "Doblo",
-            "year": "2018",
-            "type": "Minivan",
-            "engine": "1.8",
-            "size": "7",
-            "imagem": "doblo.jpg"
-        },
-        {
-            "id": "4",
-            "name": "Toro",
-            "year": "2016",
-            "type": "Picape média",
-            "engine": "1.6",
-            "size": "5",
-            "imagem": "toro.jpg"
-        },
-        {
-            "id": "5",
-            "name": "Ford Ká",
-            "year": "2019",
-            "type": "Sedan Compacto",
-            "engine": "1.0",
-            "size": "5",
-            "imagem": "ford-ka.jpg"
-        },
-        {
-            "id": "6",
-            "name": "Versa",
-            "year": "2019",
-            "type": "Sedan médio",
-            "engine": "1.4",
-            "size": "5",
-            "imagem": "versa.jpg"
-        },
-        {
-            "id": "7",
-            "name": "Jetta",
-            "year": "2021",
-            "type": "Sedan grande",
-            "engine": "2.0",
-            "size": "5",
-            "imagem": "jetta.jpg"
-        },
-        {
-            "id": "8",
-            "name": "Saveiro",
-            "year": "2018",
-            "type": "Picape leve-média",
-            "engine": "1.6",
-            "size": "5",
-            "imagem": "saveiro.jpg"
-        },
-        {
-            "id": "9",
-            "name": "Strada",
-            "year": "2016",
-            "type": "Picape leve",
-            "engine": "1.4",
-            "size": "2",
-            "imagem": "strada.jpg"
-        },
-        {
-            "id": "10",
-            "name": "Camaro",
-            "year": "2017",
-            "type": "Coupé",
-            "engine": "2.0",
-            "size": "4",
-            "imagem": "camaro.jpg"
-        },
-        {
-            "id": "11",
-            "name": "T-Cross",
-            "year": "2020",
-            "type": "Crossover",
-            "engine": "1.6",
-            "size": "5",
-            "imagem": "t-cross.jpg"
-        },
-        {
-            "id": "12",
-            "name": "Tiggo 8",
-            "year": "2021",
-            "type": "SUV Grande",
-            "engine": "2.0",
-            "size": "7",
-            "imagem": "tiggo-8.jpg"
-        },
-        {
-            "id": "70e0",
-            "name": "Fiat Mobi ",
-            "year": "2020",
-            "type": "Hatch médio",
-            "engine": "1.0",
-            "size": "05",
-            "imageUrl": "https://www.megautos.com/wp-content/uploads/2025/07/Mobi_Trekking_My26_001-1024x669.jpg"
-        }
-    ],
-    "usuarios": [
-        {
-            "id": "2c7a",
-            "nome": "João da silva ",
-            "dataNascimento": "1997-11-10",
-            "email": "joao@gmail.com",
-            "senha": "123456",
-            "imagemUrl": "https://tse1.explicit.bing.net/th/id/OIP.Io6XbD9Us1SCPnoGMlNKtQHaLH?rs=1&pid=ImgDetMain&o=7&rm=3"
-        }
-    ],
-    "reservas": []
+  "carros": [
+    {
+      "id": "1",
+      "name": "Partner",
+      "year": "2016",
+      "type": "Utilitário",
+      "engine": "1.6",
+      "size": "2",
+      "imagem": "partner.jpg"
+    },
+    {
+      "id": "2",
+      "name": "Fiorino",
+      "year": "2017",
+      "type": "Utilitário leve",
+      "engine": "1.6",
+      "size": "2",
+      "imagem": "fiorino.jpg"
+    },
+    {
+      "id": "3",
+      "name": "Doblo",
+      "year": "2018",
+      "type": "Minivan",
+      "engine": "1.8",
+      "size": "7",
+      "imagem": "doblo.jpg"
+    },
+    {
+      "id": "4",
+      "name": "Toro",
+      "year": "2016",
+      "type": "Picape média",
+      "engine": "1.6",
+      "size": "5",
+      "imagem": "toro.jpg"
+    },
+    {
+      "id": "5",
+      "name": "Ford Ká",
+      "year": "2019",
+      "type": "Sedan Compacto",
+      "engine": "1.0",
+      "size": "5",
+      "imagem": "ford-ka.jpg"
+    },
+    {
+      "id": "6",
+      "name": "Versa",
+      "year": "2019",
+      "type": "Sedan médio",
+      "engine": "1.4",
+      "size": "5",
+      "imagem": "versa.jpg"
+    },
+    {
+      "id": "7",
+      "name": "Jetta",
+      "year": "2021",
+      "type": "Sedan grande",
+      "engine": "2.0",
+      "size": "5",
+      "imagem": "jetta.jpg"
+    },
+    {
+      "id": "8",
+      "name": "Saveiro",
+      "year": "2018",
+      "type": "Picape leve-média",
+      "engine": "1.6",
+      "size": "5",
+      "imagem": "saveiro.jpg"
+    },
+    {
+      "id": "9",
+      "name": "Strada",
+      "year": "2016",
+      "type": "Picape leve",
+      "engine": "1.4",
+      "size": "2",
+      "imagem": "strada.jpg"
+    },
+    {
+      "id": "10",
+      "name": "Camaro",
+      "year": "2017",
+      "type": "Coupé",
+      "engine": "2.0",
+      "size": "4",
+      "imagem": "camaro.jpg"
+    },
+    {
+      "id": "11",
+      "name": "T-Cross",
+      "year": "2020",
+      "type": "Crossover",
+      "engine": "1.6",
+      "size": "5",
+      "imagem": "t-cross.jpg"
+    },
+    {
+      "id": "12",
+      "name": "Tiggo 8",
+      "year": "2021",
+      "type": "SUV Grande",
+      "engine": "2.0",
+      "size": "7",
+      "imagem": "tiggo-8.jpg"
+    },
+    {
+      "id": "70e0",
+      "name": "Fiat Mobi ",
+      "year": "2020",
+      "type": "Hatch médio",
+      "engine": "1.0",
+      "size": "05",
+      "imageUrl": "https://www.megautos.com/wp-content/uploads/2025/07/Mobi_Trekking_My26_001-1024x669.jpg"
+    }
+  ],
+  "usuarios": [
+    {
+      "nome": "Lucas da Silva",
+      "dataNascimento": "1997-11-30",
+      "email": "lucas@gmail.com",
+      "senha": "123456789",
+      "id": "8287"
+    }
+  ],
+  "reservas": []
 }

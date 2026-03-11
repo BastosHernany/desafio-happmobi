@@ -25,7 +25,7 @@ export class InicioComponent {
 
   usuario: Usuario | null = null;
   nomeUsuario = 'Usuário';
-  fotoUsuario = 'assets/avatar.png';
+  fotoUsuario = '';
   carregandoReservas = true;
 
   mostrandoModalAdicionar = false;
@@ -63,7 +63,7 @@ export class InicioComponent {
     if (u) {
       this.usuario = u as Usuario;
       this.nomeUsuario = this.usuario.nome || 'Usuário';
-      this.fotoUsuario = this.usuario.imagemUrl || 'assets/avatar.png';
+      this.fotoUsuario = this.usuario.imagemUrl || '';
 
       // carregar reservas do usuário e mapear para carros
       this.reservaService.listarPorUsuario(this.usuario.id!).pipe(

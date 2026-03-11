@@ -5,8 +5,13 @@
 
         <div class="absolute left-1/2 top-35 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10">
             <div class="rounded-full shadow-md">
-                <div class="overflow-hidden rounded-full w-26 h-26 md:w-28 md:h-28">
-                    <img [src]="fotoUsuario" [alt]="nomeUsuario" class="w-full h-full object-cover object-center block" />
+                <div class="overflow-hidden rounded-full w-26 h-26 md:w-28 md:h-28 bg-gray-100 flex items-center justify-center">
+                    <ng-container *ngIf="fotoUsuario; else silhuetaUsuario">
+                        <img [src]="fotoUsuario" [alt]="nomeUsuario" class="w-full h-full object-cover object-center block" />
+                    </ng-container>
+                    <ng-template #silhuetaUsuario>
+                        <img src="assets/silueta.jpg" alt="Sem foto" class="w-full h-full object-cover" />
+                    </ng-template>
                 </div>
             </div>
             <h2 class="mt-2.5 text-2xl md:text-2xl font-regular text-white text-center drop-shadow-md">Olá, {{ nomeUsuario }}</h2>
