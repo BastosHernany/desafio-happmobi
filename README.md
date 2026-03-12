@@ -128,19 +128,4 @@ Base: `http://localhost:3000`
 5. Em `Início` ou `Filtro`, pesquise/reserve um veículo. Confirme na tela de Agendamentos.
 6. Finalize/cancele uma reserva e observe que o histórico de "Últimas reservas" é mantido (implementação no frontend).
 
-## Notas finais para avaliador
 
-O candidato focou no escopo de Frontend conforme instruções do processo (interfaces, fluxos, validações e UX). O backend foi mantido como mock para demonstrar os requisitos funcionais. As limitações e as recomendações estão documentadas acima.
-
-## Backend (json-server)
-
-Adicionei um `db.json` com os dados de carros para simular o backend usando `json-server`.
-
-- **Rodar o backend:**
-
-```bash
-npm install
-npm run start:backend
-```
-
-O servidor ficará disponível em `http://localhost:3000` e os carros em `http://localhost:3000/carros`.
