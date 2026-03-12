@@ -30,7 +30,7 @@ Pré-requisitos: Node.js e npm.
 1. Instalar dependências:
 
 ```bash
-npm install
+npm install --legacy-peer-deps
 ```
 
 2. Iniciar frontend (Angular dev server):
@@ -127,5 +127,6 @@ Base: `http://localhost:3000`
 4. Em `Central` (rota protegida) adicione/edite/exclua veículos.
 5. Em `Início` ou `Filtro`, pesquise/reserve um veículo. Confirme na tela de Agendamentos.
 6. Finalize/cancele uma reserva e observe que o histórico de "Últimas reservas" é mantido (implementação no frontend).
+
 
 
