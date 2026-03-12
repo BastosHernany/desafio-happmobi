@@ -21,6 +21,7 @@ Este projeto é a entrega do desafio técnico para a vaga de Desenvolvedor Front
 - Bundler / CLI: Angular CLI
 - Mock backend: json-server (db.json)
 - Ferramentas de desenvolvimento: Node.js, npm
+- Testes E2E: Cypress
 
 ## Como rodar localmente
 
@@ -47,6 +48,27 @@ npm install --save-dev json-server
 # rodar json-server (usa db.json na raiz do projeto)
 npx json-server --watch db.json --port 3000
 ```
+
+### Executar testes E2E (Cypress)
+
+Certifique-se que o frontend e o mock backend estejam em execução (conforme passos acima). Em seguida, abra o Cypress em modo interativo para depuração ou rode em modo headless para CI.
+
+Modo interativo (UI):
+
+```bash
+npm run cypress:open
+```
+
+Modo headless (execução automática):
+
+```bash
+npm run cypress:run --spec "cypress/e2e/fluxos-usuario.spec.ts"
+```
+
+Observações:
+
+- Os testes usam `cypress/e2e/fluxos-usuario.spec.ts` e stubs para endpoints `GET /carros`, `GET /usuarios` e `/reservas`.
+- Se o seu backend mock estiver em outra porta, passe `--config baseUrl=http://localhost:PORT` ao abrir/rodar o Cypress.
 
 ## Endpoints consumidos (mock)
 
