@@ -29,6 +29,8 @@ Pré-requisitos: Node.js e npm.
 
 1. Instalar dependências:
 
+Observação: devido a um conflito de peer-dependencies, execute o comando abaixo para instalar as dependências corretamente.
+
 ```bash
 npm install --legacy-peer-deps
 ```
@@ -127,6 +129,3 @@ Base: `http://localhost:3000`
 4. Em `Central` (rota protegida) adicione/edite/exclua veículos.
 5. Em `Início` ou `Filtro`, pesquise/reserve um veículo. Confirme na tela de Agendamentos.
 6. Finalize/cancele uma reserva e observe que o histórico de "Últimas reservas" é mantido (implementação no frontend).
-
-
-
