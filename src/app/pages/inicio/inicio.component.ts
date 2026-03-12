@@ -28,21 +28,14 @@ export class InicioComponent {
   nomeUsuario = 'Usuário';
   fotoUsuario = '';
   carregandoReservas = true;
-
-
-<<<<<<< HEAD
   searchTerm = '';
   searchResults: Carro[] = [];
   sucessoReserva = '';
   erroReserva = '';
-  // novos estados para regras de reserva
   reservaErroModal = false;
   reservaErroMensagem = '';
   reservaErroIrAgendamentos = false;
 
-
-=======
->>>>>>> 828f236e78a66e0e7f60932157a5f08985d9238d
 
   constructor(
     private carroService: CarroService,
@@ -71,21 +64,14 @@ export class InicioComponent {
         })
       ).subscribe({
         next: (carros: any) => {
-<<<<<<< HEAD
           this.carrosAtivos = carros || [];
-          // carregar histórico local e mesclar (manter únicos)
           const historico = this.loadHistoricoReservas();
           const mapa = new Map<string | number, Carro>();
-          // primeiro as reservas ativas (mais recentes primeiro)
           (this.carrosAtivos || []).forEach((c: Carro) => mapa.set(String(c.id), c));
-          // depois completar com histórico se não existir
           (historico || []).forEach((h: Carro) => {
             if (!mapa.has(String(h.id))) mapa.set(String(h.id), h);
           });
           this.carrosReservados = Array.from(mapa.values());
-=======
-          this.carrosReservados = carros || [];
->>>>>>> 828f236e78a66e0e7f60932157a5f08985d9238d
           this.carregandoReservas = false;
         },
         error: () => {
@@ -102,7 +88,6 @@ export class InicioComponent {
     }
   }
 
-<<<<<<< HEAD
   pesquisar() {
     const query = (this.searchTerm || '').trim();
     if (!query) {
@@ -119,11 +104,6 @@ export class InicioComponent {
       }
     });
   }
-=======
-
-  
->>>>>>> 828f236e78a66e0e7f60932157a5f08985d9238d
-
   reservaConfirmModal = false;
   reservaCarroSelecionado?: Carro;
 
@@ -141,7 +121,6 @@ export class InicioComponent {
       return;
     }
 
-    // 1) checar se o usuário já tem reserva ativa
     this.reservaService.listarPorUsuario(user.id).subscribe({
       next: (minhas) => {
         if (minhas && minhas.length > 0) {
@@ -151,7 +130,6 @@ export class InicioComponent {
           return;
         }
 
-        // 2) checar se o veículo já está reservado por qualquer usuário
         this.reservaService.listarTodas().subscribe({
           next: (todas) => {
             const ocupado = (todas || []).some(r => String(r.carroId) === String(c.id));
@@ -162,7 +140,6 @@ export class InicioComponent {
               return;
             }
 
-            // tudo ok — abrir modal de confirmação
             this.reservaCarroSelecionado = c;
             this.reservaConfirmModal = true;
           },
@@ -200,10 +177,10 @@ export class InicioComponent {
       next: (r) => {
         this.sucessoReserva = 'Reserva criada com sucesso.';
         this.carrosReservados.unshift(c);
-        // marcar que há reservas ativas e atualizar lista ativa
+
         this.temReservasAtivas = true;
         this.carrosAtivos.unshift(c);
-        // salvar no histórico local para manter o carro nas "últimas reservas" mesmo após finalizar
+
         this.saveHistoricoReserva(c);
         this.searchResults = this.searchResults.filter((x) => x.id !== c.id);
         this.reservaConfirmModal = false;
@@ -236,10 +213,10 @@ export class InicioComponent {
       const atual = this.loadHistoricoReservas();
       const filtrado = (atual || []).filter((x) => String(x.id) !== String(c.id));
       filtrado.unshift(c);
-      // limitar histórico para os 12 mais recentes
+
       localStorage.setItem(this.HISTORICO_KEY, JSON.stringify(filtrado.slice(0, 12)));
     } catch {
-      // ignore
+
     }
   }
 }
