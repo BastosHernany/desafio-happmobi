@@ -32,7 +32,7 @@ export class PerfilComponent {
   mensagem = '';
 
   constructor(private auth: AutenticacaoService, private usuarioService: UsuarioService, private router: Router) {
-    const u = this.auth.getUser();
+    const u = this.auth.obterUsuario();
     if (u) {
       this.usuario = u as Usuario;
       this.nome = this.usuario.nome || '';
@@ -56,7 +56,7 @@ export class PerfilComponent {
     if (!confirm) return;
     if (!this.usuario) return;
 
-    // validações simples
+
     if (!this.nome || !this.email || !this.senha) {
       this.mensagem = 'Preencha nome, email e senha.';
       return;
@@ -76,7 +76,7 @@ export class PerfilComponent {
         this.carregando = false;
         this.editando = false;
         this.usuario = u;
-        this.auth.setSession(localStorage.getItem('app_token') || '', u);
+        this.auth.setSessao(localStorage.getItem('app_token') || '', u);
         this.mensagem = 'Dados atualizados com sucesso.';
         setTimeout(() => (this.mensagem = ''), 3000);
       },
@@ -100,7 +100,7 @@ export class PerfilComponent {
     this.usuarioService.deletarUsuario(this.usuario.id!).subscribe({
       next: () => {
         this.carregando = false;
-        this.auth.clearSession();
+        this.auth.limparSessao();
         this.router.navigate(['/']);
       },
       error: () => {

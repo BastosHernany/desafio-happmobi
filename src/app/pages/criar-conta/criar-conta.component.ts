@@ -60,7 +60,7 @@ export class CriarContaComponent {
 
     this.usuarioService.criarUsuario(payload).subscribe({
       next: (u) => {
-        // não autentica automaticamente — redireciona ao login para que o usuário faça login manualmente
+
         this.sucesso = 'Conta criada com sucesso. Faça login para acessar sua conta.';
         setTimeout(() => this.router.navigate(['/']), 900);
       },

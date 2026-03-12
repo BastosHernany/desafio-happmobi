@@ -43,7 +43,7 @@ export class InicioComponent {
     private reservaService: ReservaService,
     public router: Router
   ) {
-    const user = this.auth.getUser();
+    const user = this.auth.obterUsuario();
     if (user) {
       this.usuario = user as Usuario;
       this.nomeUsuario = this.usuario.nome || 'Usuário';
@@ -115,7 +115,7 @@ export class InicioComponent {
     this.reservaErroMensagem = '';
     this.reservaErroIrAgendamentos = false;
 
-    const user = this.auth.getUser();
+    const user = this.auth.obterUsuario();
     if (!user) {
       this.erroReserva = 'Você precisa estar logado para reservar.';
       return;
@@ -164,7 +164,7 @@ export class InicioComponent {
     const c = this.reservaCarroSelecionado;
     if (!c) return;
 
-    const user = this.auth.getUser();
+    const user = this.auth.obterUsuario();
     if (!user) {
       this.erroReserva = 'Você precisa estar logado para reservar.';
       this.reservaConfirmModal = false;

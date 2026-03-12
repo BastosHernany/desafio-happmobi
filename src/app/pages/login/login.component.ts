@@ -33,7 +33,7 @@ export class LoginComponent {
           const header = btoa(JSON.stringify({ alg: 'HS256', typ: 'JWT' }));
           const payload = btoa(JSON.stringify({ sub: user.id, email: user.email, iat: Date.now() }));
           const token = `${header}.${payload}.fake-signature`;
-          this.auth.setSession(token, user);
+          this.auth.setSessao(token, user);
           this.router.navigate(['/inicio']);
         } else {
           this.erro = 'Email ou senha inválidos.';

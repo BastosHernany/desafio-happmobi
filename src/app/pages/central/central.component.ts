@@ -69,7 +69,6 @@ export class CentralComponent implements OnInit {
   }
 
   salvarCarro() {
-    // validações
     this.erroMensagem = '';
     if (!this.novoVeiculo.name || !this.novoVeiculo.year || !this.novoVeiculo.type || !this.novoVeiculo.engine || !this.novoVeiculo.size) {
       this.erroMensagem = 'Preencha todos os campos obrigatórios.';

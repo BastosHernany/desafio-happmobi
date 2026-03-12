@@ -72,7 +72,7 @@ export class FiltroComponent {
     this.reservaErroMensagem = '';
     this.reservaErroIrAgendamentos = false;
 
-    const user = this.auth.getUser();
+    const user = this.auth.obterUsuario();
     if (!user) {
       this.erroReserva = 'Você precisa estar logado para reservar.';
       return;
@@ -124,7 +124,7 @@ export class FiltroComponent {
     const c = this.reservaCarroSelecionado;
     if (!c) return;
 
-    const user = this.auth.getUser();
+    const user = this.auth.obterUsuario();
     if (!user) {
       this.erroReserva = 'Você precisa estar logado para reservar.';
       this.reservaConfirmModal = false;

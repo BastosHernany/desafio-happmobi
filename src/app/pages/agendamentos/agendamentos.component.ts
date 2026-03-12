@@ -39,7 +39,7 @@ export class AgendamentosComponent {
   }
 
   carregarAgendamentos() {
-    const user = this.auth.getUser();
+    const user = this.auth.obterUsuario();
     if (!user) {
       this.carrosReservados = [];
       this.reservas = [];
@@ -91,7 +91,7 @@ export class AgendamentosComponent {
         this.mensagem = this.confirmType === 'cancelar' ? 'Cancelamento realizado com sucesso.' : 'Finalização da reserva realizada com sucesso.';
         this.selectedReserva = undefined;
         this.confirmType = null;
-        // recarrega lista
+
         this.carregarAgendamentos();
         setTimeout(() => (this.mensagem = ''), 3000);
       },
